@@ -1,0 +1,32 @@
+.brand {
+  text-align: center;
+}
+
+
+.item {
+  display: inline-block;
+  padding: 0em;
+  margin: 0 0.8rem;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 8px;
+  color: #7a9199;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  &:hover:after {
+    width: 100%;
+  }
+  &:after {
+    content: '';
+    display: block;
+    width: 0;
+    margin: 6px auto 0;
+    border-bottom: 1px solid #7a9199;
+    transition: width 0.3s ease-in-out;
+  }
+}
+
+
+.container {
+  margin: 1rem;
+}
