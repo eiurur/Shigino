@@ -24,7 +24,6 @@ export default class Moment extends React.Component {
   }
 
   componentDidMount() {
-
     if (this.state.initialized) {
       return;
     }
@@ -38,19 +37,12 @@ export default class Moment extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("Moment componentWillReceiveProps");
-    console.log(this.props, nextProps);
     this.setState({
       moment: nextProps.moment,
     });
-    // this.loadTwitterWidget();
-    // console.log("twttr realod");
-    // twttr.widgets.load();
-    // this.forceUpdate()
   }
 
   render() {
-    console.log('Moment render', this.state);
     return (
       <div className={style.container}>
         <div className={style.moment}>

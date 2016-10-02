@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import ImageList from '../ImageList/ImageList';
 import SearchForm from '../SearchForm/SearchForm';
 
 export default class SearchBox extends React.Component {
@@ -56,9 +55,7 @@ export default class SearchBox extends React.Component {
   render() {
     return (
       <div className='searchBox'>
-        <h1>Images</h1>
         <SearchForm onUrlSubmit={this.handleUrlSubmit.bind(this)} />
-        <ImageList images={this.state.images} err={this.state.err} />
       </div>
     );
   }

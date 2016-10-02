@@ -50,11 +50,17 @@ export default class MomentContainer extends React.Component {
     });
   }
 
-  // ページを読み込んだときに呼ばれる
   componentDidMount() {
     this.fetchMoments();
   }
 
+  componentDidUpdate() {
+    ReactDom.findDOMNode(this).scrollIntoView();
+  }
+
+  scrollToTop() {
+    window.scroll(0, 0);
+  }
 
   // componentWillReceiveProps(nextProps) {
   //   console.log("MomentContainer componentWillReceiveProps");
@@ -73,6 +79,8 @@ export default class MomentContainer extends React.Component {
     // setStateすると二度レンダリングが走るのでこれでよい
     this.state.moment = moment;
     ReactDOM.render(<Moment moment={this.state.moment}></Moment>,  ReactDOM.findDOMNode(this.refs.widget));
+
+    this.scrollToTop();
   }
 
 

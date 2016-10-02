@@ -34,7 +34,6 @@ export default class MomentList extends React.Component {
 
 
   render() {
-    console.log("MomentList moments ", this.state.moments);
     let momentNodes;
     if(this.state.moments.length === 0) {
       momentNodes = <div><h2>空</h2></div>;
