@@ -1,6 +1,5 @@
-const chalk = require('chalk');
+const chalk    = require('chalk');
 const mongoose = require('mongoose');
-// let configs  = require('konfig')();
 
 require('dotenv').config();
 

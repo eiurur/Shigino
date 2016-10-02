@@ -62,13 +62,9 @@
 
 	var _MomentContainer2 = _interopRequireDefault(_MomentContainer);
 
-	var _History = __webpack_require__(271);
+	__webpack_require__(271);
 
-	var _History2 = _interopRequireDefault(_History);
-
-	__webpack_require__(272);
-
-	__webpack_require__(274);
+	__webpack_require__(273);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -79,8 +75,7 @@
 	    _reactRouter.Route,
 	    { path: '/', component: _App2.default },
 	    _react2.default.createElement(_reactRouter.IndexRedirect, { to: '/lists' }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/lists', component: _MomentContainer2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/history', component: _History2.default })
+	    _react2.default.createElement(_reactRouter.Route, { path: '/lists', component: _MomentContainer2.default })
 	  )
 	), document.getElementById('app'));
 
@@ -27645,13 +27640,20 @@
 	        _this2.setState({ err: err });
 	      });
 	    }
-
-	    // ページを読み込んだときに呼ばれる
-
 	  }, {
 	    key: "componentDidMount",
 	    value: function componentDidMount() {
 	      this.fetchMoments();
+	    }
+	  }, {
+	    key: "componentDidUpdate",
+	    value: function componentDidUpdate() {
+	      ReactDom.findDOMNode(this).scrollIntoView();
+	    }
+	  }, {
+	    key: "scrollToTop",
+	    value: function scrollToTop() {
+	      window.scroll(0, 0);
 	    }
 
 	    // componentWillReceiveProps(nextProps) {
@@ -27673,6 +27675,8 @@
 	      // setStateすると二度レンダリングが走るのでこれでよい
 	      this.state.moment = moment;
 	      _reactDom2.default.render(_react2.default.createElement(_Moment2.default, { moment: this.state.moment }), _reactDom2.default.findDOMNode(this.refs.widget));
+
+	      this.scrollToTop();
 	    }
 	  }, {
 	    key: "render",
@@ -29092,7 +29096,6 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-
 	      if (this.state.initialized) {
 	        return;
 	      }
@@ -29107,20 +29110,13 @@
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      console.log("Moment componentWillReceiveProps");
-	      console.log(this.props, nextProps);
 	      this.setState({
 	        moment: nextProps.moment
 	      });
-	      // this.loadTwitterWidget();
-	      // console.log("twttr realod");
-	      // twttr.widgets.load();
-	      // this.forceUpdate()
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log('Moment render', this.state);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _Moment2.default.container },
@@ -29263,7 +29259,6 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      console.log("MomentList moments ", this.state.moments);
 	      var momentNodes = void 0;
 	      if (this.state.moments.length === 0) {
 	        momentNodes = _react2.default.createElement(
@@ -29404,68 +29399,10 @@
 /* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Hisotry = function (_React$Component) {
-	  _inherits(Hisotry, _React$Component);
-
-	  function Hisotry() {
-	    _classCallCheck(this, Hisotry);
-
-	    return _possibleConstructorReturn(this, (Hisotry.__proto__ || Object.getPrototypeOf(Hisotry)).apply(this, arguments));
-	  }
-
-	  _createClass(Hisotry, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'h1',
-	          null,
-	          'Hisotry'
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Under construction ...'
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Hisotry;
-	}(_react2.default.Component);
-
-	exports.default = Hisotry;
-
-/***/ },
-/* 272 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(273);
+	var content = __webpack_require__(272);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(239)(content, {});
@@ -29485,7 +29422,7 @@
 	}
 
 /***/ },
-/* 273 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(238)();
@@ -29499,13 +29436,13 @@
 
 
 /***/ },
-/* 274 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(275);
+	var content = __webpack_require__(274);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(239)(content, {});
@@ -29525,7 +29462,7 @@
 	}
 
 /***/ },
-/* 275 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(238)();

@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose     = require('mongoose');
 const BaseProvider = require('./BaseProvider');
-let { Schema }   = mongoose;
-let { ObjectId } = Schema;
+let { Schema }     = mongoose;
+let { ObjectId }   = Schema;
 
 let TweetSchema = new Schema({
   moment_id: {

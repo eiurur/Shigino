@@ -11,7 +11,6 @@ export default class MomentList extends React.Component {
     };
   }
 
-
   // ページを読み込んだときに呼ばれる
   componentDidMount() {
     console.log("MomentList componentDidMount");

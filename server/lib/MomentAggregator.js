@@ -1,8 +1,8 @@
 
 require('dotenv').config();
-const twit = require('twit');
-const path = require('path');
-const client = require('cheerio-httpcli');
+const twit                 = require('twit');
+const path                 = require('path');
+const client               = require('cheerio-httpcli');
 const ModelProviderFactory = require(path.resolve('server', 'model', 'ModelProviderFactory'));
 
 
@@ -16,6 +16,10 @@ module.exports = class MomentAggregator {
     });
     this.keyword = "moments";
     this.TweetProvider = ModelProviderFactory.create('Tweet');
+  }
+
+  includeUrl(tweet) {
+    return tweet.entities.urls.expanded_url !== null;
   }
 
   isMomentTweet(tweet) {
@@ -54,19 +58,14 @@ module.exports = class MomentAggregator {
     this.stream.on('tweet', (tweet) => {
       console.log(tweet.entities.urls);
 
-      if (tweet.entities.urls.expanded_url === null) return;
+      if (!this.includeUrl(tweet)) return;
       if (!this.isMomentTweet(tweet)) return;
 
       console.log(tweet);
-      console.log(this.getMomentTweet(tweet));
       const moment_expanded_url = this.getMomentTweet(tweet).expanded_url;
 
       this.scrapeMomentInfo(moment_expanded_url)
       .then( momentInfo => {
-        console.log('momentInfo = ', momentInfo);
-        console.log('moment_expanded_url.split('/').pop() = ', moment_expanded_url.split('/').pop());
-
-
         const opts = {
           moment_id: moment_expanded_url.split('/').pop(),
           expanded_url: moment_expanded_url,

@@ -1,5 +1,5 @@
-const path = require('path');
-let TweetProvider = require(path.resolve('server', 'model', 'TweetProvider'));
+const path          = require('path');
+const TweetProvider = require(path.resolve('server', 'model', 'TweetProvider'));
 
 module.exports = class DatabaseProviderFactory {
   static create(name) {
