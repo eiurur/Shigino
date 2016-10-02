@@ -16,8 +16,9 @@ let TweetSchema = new Schema({
   avater: String,
   fullname: String,
   username: String,
+  title: String,
   description: String,
-  thumnail: String,
+  thumbnail: String,
   count: {
     type: Number,
     default: 0

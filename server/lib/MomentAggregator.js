@@ -38,8 +38,9 @@ module.exports = class MomentAggregator {
           avater: result.$('.MomentCapsuleCover-details .MomentUserByline-avatar').attr('src'),
           fullname: result.$('.MomentCapsuleCover-details .MomentUserByline-fullname').text(),
           username: result.$('.MomentCapsuleCover-details .MomentUserByline-username').text(),
+          title: result.$('.MomentCapsuleCover-title').text(),
           description: result.$('.MomentCapsuleCover-details .MomentCapsuleCover-description').text(),
-          thumnail: result.$('.MomentCapsuleCover-media .MomentMediaItem-entity--image').attr('src'),
+          thumbnail: result.$('.MomentCapsuleCover-media .MomentMediaItem-entity--image').attr('src'),
         };
 
         return resolve(info);
@@ -53,6 +54,7 @@ module.exports = class MomentAggregator {
     this.stream.on('tweet', (tweet) => {
       console.log(tweet.entities.urls);
 
+      if (tweet.entities.urls.expanded_url === null) return;
       if (!this.isMomentTweet(tweet)) return;
 
       console.log(tweet);
@@ -71,8 +73,9 @@ module.exports = class MomentAggregator {
           avater: momentInfo.avater,
           fullname: momentInfo.fullname,
           username: momentInfo.username,
+          title: momentInfo.title,
           description: momentInfo.description,
-          thumnail: momentInfo.thumnail,
+          thumbnail: momentInfo.thumbnail,
         };
         this.TweetProvider.upsert(opts);
       });

@@ -58,17 +58,17 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _MomentList = __webpack_require__(240);
+	var _MomentContainer = __webpack_require__(240);
 
-	var _MomentList2 = _interopRequireDefault(_MomentList);
+	var _MomentContainer2 = _interopRequireDefault(_MomentContainer);
 
-	var _History = __webpack_require__(268);
+	var _History = __webpack_require__(271);
 
 	var _History2 = _interopRequireDefault(_History);
 
-	__webpack_require__(269);
+	__webpack_require__(272);
 
-	__webpack_require__(271);
+	__webpack_require__(274);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -79,7 +79,7 @@
 	    _reactRouter.Route,
 	    { path: '/', component: _App2.default },
 	    _react2.default.createElement(_reactRouter.IndexRedirect, { to: '/lists' }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/lists', component: _MomentList2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/lists', component: _MomentContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/history', component: _History2.default })
 	  )
 	), document.getElementById('app'));
@@ -27565,6 +27565,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
 	var _axios = __webpack_require__(241);
 
 	var _axios2 = _interopRequireDefault(_axios);
@@ -27577,6 +27581,10 @@
 
 	var _MomentList2 = _interopRequireDefault(_MomentList);
 
+	var _MomentContainer = __webpack_require__(269);
+
+	var _MomentContainer2 = _interopRequireDefault(_MomentContainer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27585,15 +27593,16 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var MomentList = function (_React$Component) {
-	  _inherits(MomentList, _React$Component);
+	var MomentContainer = function (_React$Component) {
+	  _inherits(MomentContainer, _React$Component);
 
-	  function MomentList(props) {
-	    _classCallCheck(this, MomentList);
+	  function MomentContainer(props) {
+	    _classCallCheck(this, MomentContainer);
 
-	    var _this = _possibleConstructorReturn(this, (MomentList.__proto__ || Object.getPrototypeOf(MomentList)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (MomentContainer.__proto__ || Object.getPrototypeOf(MomentContainer)).call(this, props));
 
 	    _this.state = {
+	      moment: {},
 	      moments: [],
 	      err: ''
 	    };
@@ -27601,10 +27610,11 @@
 	    return _this;
 	  }
 
-	  _createClass(MomentList, [{
+	  _createClass(MomentContainer, [{
 	    key: "clearState",
 	    value: function clearState() {
 	      this.state = {
+	        moment: {},
 	        moments: [],
 	        err: ''
 	      };
@@ -27621,13 +27631,16 @@
 	        method: 'get',
 	        responseType: 'json',
 	        params: {
-	          limit: 10
+	          limit: 30
 	        }
 	      }).then(function (res) {
 	        console.log(res.status);
 	        console.log(res.data);
 	        if (res.status !== 200) throw new Error(res.data);
-	        _this2.setState({ moments: res.data.moments });
+	        _this2.setState({
+	          moment: res.data.moments[0],
+	          moments: res.data.moments
+	        });
 	      }).catch(function (err) {
 	        _this2.setState({ err: err });
 	      });
@@ -27638,44 +27651,46 @@
 	  }, {
 	    key: "componentDidMount",
 	    value: function componentDidMount() {
-	      console.log('==> componentDidMount');
-	      // const isNoneQueryString = (Object.keys(this.props.location.query).length === 0);
-	      // if(isNoneQueryString) return;
 	      this.fetchMoments();
+	    }
+
+	    // componentWillReceiveProps(nextProps) {
+	    //   console.log("MomentContainer componentWillReceiveProps");
+	    //   console.log(this.props, nextProps);
+	    //   this.setState({
+	    //     moment: nextProps.moment,
+	    //   });
+	    // }
+
+	  }, {
+	    key: "changeMoment",
+	    value: function changeMoment(moment) {
+	      console.log("MomentContainer changeMoment", moment);
+
+	      // HACK: 一度DOMを削除して再生成する方法でしかTwitterWidgetを更新できなかった。
+	      _reactDom2.default.unmountComponentAtNode(_reactDom2.default.findDOMNode(this.refs.widget));
+
+	      // setStateすると二度レンダリングが走るのでこれでよい
+	      this.state.moment = moment;
+	      _reactDom2.default.render(_react2.default.createElement(_Moment2.default, { moment: this.state.moment }), _reactDom2.default.findDOMNode(this.refs.widget));
 	    }
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      console.log(this.state.moments);
-	      var momentNodes = void 0;
-	      if (this.state.err) {
-	        momentNodes = _react2.default.createElement(
-	          "div",
-	          null,
-	          _react2.default.createElement(
-	            "h2",
-	            null,
-	            this.state.err.message
-	          )
-	        );
-	      } else {
-	        momentNodes = this.state.moments.map(function (moment) {
-	          return _react2.default.createElement(_Moment2.default, { moment: moment });
-	        });
-	      }
-
+	      console.log("MomentContainer moments ", this.state.moments);
 	      return _react2.default.createElement(
 	        "div",
-	        { className: _MomentList2.default.container },
-	        momentNodes
+	        { className: _MomentContainer2.default.container },
+	        _react2.default.createElement(_MomentList2.default, { moments: this.state.moments, selectedMoment: this.changeMoment.bind(this) }),
+	        _react2.default.createElement(_Moment2.default, { ref: "widget", moment: this.state.moment })
 	      );
 	    }
 	  }]);
 
-	  return MomentList;
+	  return MomentContainer;
 	}(_react2.default.Component);
 
-	exports.default = MomentList;
+	exports.default = MomentContainer;
 
 /***/ },
 /* 241 */
@@ -29054,24 +29069,58 @@
 
 	    var _this = _possibleConstructorReturn(this, (Moment.__proto__ || Object.getPrototypeOf(Moment)).call(this, props));
 
-	    _this.state = { initialized: false };
+	    _this.state = {
+	      initialized: false,
+	      moment: _this.props.moment
+	    };
 	    return _this;
 	  }
 
 	  _createClass(Moment, [{
+	    key: 'loadTwitterWidget',
+	    value: function loadTwitterWidget() {
+	      if (typeof twttr === 'undefined') {
+	        var twitterMoment = _reactDom2.default.findDOMNode(this.refs.twitterMoment);
+	        var twitterscript = document.createElement('script');
+	        twitterscript.src = '//platform.twitter.com/widgets.js';
+	        twitterscript.async = true;
+	        twitterMoment.parentNode.appendChild(twitterscript);
+	      } else {
+	        twttr.widgets.load();
+	      }
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 
-	      var twitterMoment = _reactDom2.default.findDOMNode(this.refs.twitterMoment);
-	      var twitterscript = document.createElement('script');
-	      twitterscript.src = '//platform.twitter.com/widgets.js';
-	      twitterscript.async = true;
-	      twitterMoment.parentNode.appendChild(twitterscript);
+	      if (this.state.initialized) {
+	        return;
+	      }
+	      this.loadTwitterWidget();
+	      this.initialized();
+	    }
+	  }, {
+	    key: 'initialized',
+	    value: function initialized() {
+	      this.setState({ initialized: true });
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      console.log("Moment componentWillReceiveProps");
+	      console.log(this.props, nextProps);
+	      this.setState({
+	        moment: nextProps.moment
+	      });
+	      // this.loadTwitterWidget();
+	      // console.log("twttr realod");
+	      // twttr.widgets.load();
+	      // this.forceUpdate()
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log('Moment', this.props);
+	      console.log('Moment render', this.state);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _Moment2.default.container },
@@ -29081,7 +29130,7 @@
 	          _react2.default.createElement('a', {
 	            ref: 'twitterMoment',
 	            className: 'twitter-moment',
-	            href: '' + this.props.moment.expanded_url
+	            href: '' + this.state.moment.expanded_url
 	          })
 	        )
 	      );
@@ -29128,21 +29177,149 @@
 
 
 	// module
-	exports.push([module.id, ".src-modules-Moment-Moment---moment---1u2Gq {\n  margin-right: 1rem;\n  width: 25rem; }\n", ""]);
+	exports.push([module.id, ".src-modules-Moment-Moment---container---AegAy {\n  flex-grow: 1;\n  margin-left: 2rem; }\n", ""]);
 
 	// exports
 	exports.locals = {
-		"moment": "src-modules-Moment-Moment---moment---1u2Gq"
+		"container": "src-modules-Moment-Moment---container---AegAy"
 	};
 
 /***/ },
 /* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _axios = __webpack_require__(241);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _Moment = __webpack_require__(263);
+
+	var _Moment2 = _interopRequireDefault(_Moment);
+
+	var _MomentList = __webpack_require__(267);
+
+	var _MomentList2 = _interopRequireDefault(_MomentList);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MomentList = function (_React$Component) {
+	  _inherits(MomentList, _React$Component);
+
+	  function MomentList(props) {
+	    _classCallCheck(this, MomentList);
+
+	    var _this = _possibleConstructorReturn(this, (MomentList.__proto__ || Object.getPrototypeOf(MomentList)).call(this, props));
+
+	    _this.state = {
+	      moments: _this.props.moments
+	    };
+	    return _this;
+	  }
+
+	  // ページを読み込んだときに呼ばれる
+
+
+	  _createClass(MomentList, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      console.log("MomentList componentDidMount");
+	      console.log(this.props, this.state);
+	    }
+	  }, {
+	    key: "componentWillReceiveProps",
+	    value: function componentWillReceiveProps(nextProps) {
+	      console.log("MomentList componentWillReceiveProps");
+	      console.log(this.props.moments, nextProps.moments);
+	      this.state = {
+	        moments: nextProps.moments
+	      };
+	    }
+	  }, {
+	    key: "handleChange",
+	    value: function handleChange(moment) {
+	      console.log("MomentList handleChange ", moment);
+	      this.props.selectedMoment(moment);
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var _this2 = this;
+
+	      console.log("MomentList moments ", this.state.moments);
+	      var momentNodes = void 0;
+	      if (this.state.moments.length === 0) {
+	        momentNodes = _react2.default.createElement(
+	          "div",
+	          null,
+	          _react2.default.createElement(
+	            "h2",
+	            null,
+	            "\u7A7A"
+	          )
+	        );
+	      } else {
+	        momentNodes = this.state.moments.map(function (moment, i) {
+	          return _react2.default.createElement(
+	            "div",
+	            { className: _MomentList2.default.media },
+	            _react2.default.createElement("img", { className: _MomentList2.default.figure, src: moment.thumbnail, onClick: _this2.handleChange.bind(_this2, moment) }),
+	            _react2.default.createElement(
+	              "div",
+	              { className: _MomentList2.default.body },
+	              _react2.default.createElement(
+	                "h3",
+	                { className: _MomentList2.default.title },
+	                moment.title
+	              ),
+	              _react2.default.createElement(
+	                "p",
+	                null,
+	                moment.description
+	              )
+	            )
+	          );
+	        });
+	      }
+
+	      return _react2.default.createElement(
+	        "div",
+	        { className: _MomentList2.default.container },
+	        momentNodes
+	      );
+	    }
+	  }]);
+
+	  return MomentList;
+	}(_react2.default.Component);
+
+	exports.default = MomentList;
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(267);
+	var content = __webpack_require__(268);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(239)(content, {});
@@ -29162,7 +29339,7 @@
 	}
 
 /***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(238)();
@@ -29170,15 +29347,61 @@
 
 
 	// module
-	exports.push([module.id, ".src-modules-MomentList-MomentList---container---1MUkk {\n  display: flex;\n  flex-wrap: no-wrap;\n  margin: 2rem 0; }\n", ""]);
+	exports.push([module.id, ".src-modules-MomentList-MomentList---container---1MUkk {\n  color: #7a9199;\n  width: 40%; }\n\n.src-modules-MomentList-MomentList---media---2rmiE {\n  display: flex;\n  align-items: flex-start;\n  border: 1px #7a9199 solid;\n  border-collapse: collapse;\n  padding: 1rem; }\n\n.src-modules-MomentList-MomentList---title---ScMTB {\n  margin: 0 0 .5rem;\n  font-size: 0.8rem; }\n\n.src-modules-MomentList-MomentList---figure---1HUvv {\n  margin-right: 1rem;\n  object-fit: cover;\n  width: 5rem;\n  height: 5rem; }\n\n.src-modules-MomentList-MomentList---body---3uXjw {\n  flex: 1;\n  font-size: 0.5rem; }\n", ""]);
 
 	// exports
 	exports.locals = {
-		"container": "src-modules-MomentList-MomentList---container---1MUkk"
+		"container": "src-modules-MomentList-MomentList---container---1MUkk",
+		"media": "src-modules-MomentList-MomentList---media---2rmiE",
+		"title": "src-modules-MomentList-MomentList---title---ScMTB",
+		"figure": "src-modules-MomentList-MomentList---figure---1HUvv",
+		"body": "src-modules-MomentList-MomentList---body---3uXjw"
 	};
 
 /***/ },
-/* 268 */
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(270);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(239)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./MomentContainer.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./MomentContainer.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(238)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".src-modules-MomentContainer-MomentContainer---container---2egT4 {\n  display: flex; }\n", ""]);
+
+	// exports
+	exports.locals = {
+		"container": "src-modules-MomentContainer-MomentContainer---container---2egT4"
+	};
+
+/***/ },
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29236,13 +29459,13 @@
 	exports.default = Hisotry;
 
 /***/ },
-/* 269 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(270);
+	var content = __webpack_require__(273);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(239)(content, {});
@@ -29262,7 +29485,7 @@
 	}
 
 /***/ },
-/* 270 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(238)();
@@ -29276,13 +29499,13 @@
 
 
 /***/ },
-/* 271 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(272);
+	var content = __webpack_require__(275);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(239)(content, {});
@@ -29302,7 +29525,7 @@
 	}
 
 /***/ },
-/* 272 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(238)();

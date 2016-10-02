@@ -1,7 +1,7 @@
 {
-  "name": "suehara",
+  "name": "Chika",
   "version": "0.0.1",
-  "description": "",
+  "description": "Twitter moment aggregator",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

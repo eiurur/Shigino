@@ -1,7 +1,35 @@
 .container {
+  // display: flex;
+  // // justify-content: center;
+  // // justify-content: space-between;
+  // flex-wrap: wrap;
+  // margin: 0 2rem;
+  color: #7a9199;
+  width: 40%;
+}
+
+.media {
   display: flex;
-  // justify-content: center;
-  // justify-content: space-between;
-  flex-wrap: no-wrap;
-  margin: 2rem 0;
+  align-items: flex-start;
+  // margin: 2rem 0;
+  border: 1px #7a9199 solid;
+  border-collapse: collapse;
+  padding: 1rem;
+}
+
+.title {
+  margin: 0 0 .5rem;
+  font-size: 0.8rem;
+}
+
+.figure {
+  margin-right: 1rem;
+  object-fit: cover;
+  width: 5rem;
+  height: 5rem;
+}
+
+.body {
+  flex: 1;
+  font-size: 0.5rem;
 }

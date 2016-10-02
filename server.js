@@ -63,7 +63,7 @@ var app = module.exports = (() => { // application
 
   // development only
   if (env === 'development') {
-    console.log(process.env);
+    // console.log(process.env);
     // app.use(express.static(path.join(__dirname, 'public')));
     app.locals.pretty = true;
     app.use(function(err, req, res, next) {
