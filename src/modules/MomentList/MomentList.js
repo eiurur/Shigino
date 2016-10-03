@@ -1,5 +1,6 @@
 import React from "react";
 import axios from 'axios';
+import { Link } from 'react-router';
 import Moment from "../Moment/Moment";
 import style from "./MomentList.scss";
 
@@ -31,6 +32,11 @@ export default class MomentList extends React.Component {
     this.props.selectedMoment(moment);
   }
 
+  handleChangeUsername(username) {
+    console.log("MomentList handleChangeUsername ", username);
+    this.props.selectedUsername(username);
+  }
+
 
   render() {
     let momentNodes;
@@ -42,7 +48,10 @@ export default class MomentList extends React.Component {
           <div className={style.media} >
             <img className={style.figure} src={moment.thumbnail} onClick={this.handleChange.bind(this, moment)}/>
             <div className={style.body}>
-              <h3 className={style.title}>{moment.title}</h3>
+              <h3 className={style.title}>
+                {moment.title}
+                <Link to={`/user/@${moment.username}`} className={style.username}>@{moment.username}</Link>
+              </h3>
               <p>{moment.description}</p>
             </div>
           </div>

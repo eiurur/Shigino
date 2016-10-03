@@ -24,6 +24,7 @@ module.exports = class MomentAggregator {
 
   isMomentTweet(tweet) {
     return tweet.entities.urls.some( tweet_url => {
+      if (!tweet_url.expanded_url) return false;
       return tweet_url.expanded_url.indexOf('https://twitter.com/i/moments/') !== -1;
     });
   }
@@ -41,7 +42,7 @@ module.exports = class MomentAggregator {
         const info = {
           avater: result.$('.MomentCapsuleCover-details .MomentUserByline-avatar').attr('src'),
           fullname: result.$('.MomentCapsuleCover-details .MomentUserByline-fullname').text(),
-          username: result.$('.MomentCapsuleCover-details .MomentUserByline-username').text(),
+          username: result.$('.MomentCapsuleCover-details .MomentUserByline-username').text().replace('@', ''),
           title: result.$('.MomentCapsuleCover-title').text(),
           description: result.$('.MomentCapsuleCover-details .MomentCapsuleCover-description').text(),
           thumbnail: result.$('.MomentCapsuleCover-media .MomentMediaItem-entity--image').attr('src'),
@@ -58,7 +59,7 @@ module.exports = class MomentAggregator {
     this.stream.on('tweet', (tweet) => {
       console.log(tweet.entities.urls);
 
-      if (!this.includeUrl(tweet)) return;
+
       if (!this.isMomentTweet(tweet)) return;
 
       console.log(tweet);

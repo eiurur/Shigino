@@ -49,8 +49,9 @@ module.exports = class TweetProvider extends BaseProvider {
   find(params) {
     return new Promise(function(resolve, reject) {
       console.log(params);
-      return Tweet.find()
+      return Tweet.find(params.query)
       .limit(params.limit)
+      .skip(params.skip)
       .sort(params.sort)
       .exec(function(err, tweets) {
         if (err) { return reject(err); }
@@ -59,9 +60,22 @@ module.exports = class TweetProvider extends BaseProvider {
     });
   }
 
+  findByUsername(params) {
+    return new Promise(function(resolve, reject) {
+      return Tweet.find({username: params.username})
+      .limit(params.limit)
+      .skip(params.skip)
+      .sort(params.sort)
+      .exec(function(err, tweet) {
+        if (err) { return reject(err); }
+        return resolve(tweet);
+      });
+    });
+  }
+
   findByUrl(params) {
     return new Promise(function(resolve, reject) {
-      return Tweet.findOne({expanded_url: params.findByUrl})
+      return Tweet.findOne({username: params.findByUrl})
       .exec(function(err, tweet) {
         if (err) { return reject(err); }
         return resolve(tweet);
@@ -83,7 +97,7 @@ module.exports = class TweetProvider extends BaseProvider {
     return new Promise((resolve, reject) => {
       console.log("\n============> DonePost flucateNumDone\n");
       console.log(params);
-      let query = {expanded_url: params.expanded_url};
+      let query = {moment_id: params.moment_id};
       let data = Object.assign(params, {
         updated_at: Date.now(),
         $inc: { count: 1}

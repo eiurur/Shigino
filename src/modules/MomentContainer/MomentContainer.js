@@ -25,16 +25,17 @@ export default class MomentContainer extends React.Component {
   }
 
 
-  fetchMoments() {
+  fetchMoments(params = {}) {
     this.clearState();
 
     axios({
       url: this.url,
       method: 'get',
       responseType: 'json',
-      params: {
+      params: Object.assign(params, {
+        skip: 0
         limit: 30
-      }
+      })
     })
     .then( res => {
       console.log(res.status);
@@ -44,6 +45,7 @@ export default class MomentContainer extends React.Component {
         moment: res.data.moments[0],
         moments: res.data.moments
       });
+      this.changeMoment(res.data.moments[0]);
     })
     .catch( err => {
       this.setState({err: err});
@@ -51,24 +53,19 @@ export default class MomentContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchMoments();
-  }
-
-  componentDidUpdate() {
-    ReactDom.findDOMNode(this).scrollIntoView();
+    console.log("this.props.params", this.props.params);
+    this.fetchMoments({username: this.props.params.username});
   }
 
   scrollToTop() {
     window.scroll(0, 0);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   console.log("MomentContainer componentWillReceiveProps");
-  //   console.log(this.props, nextProps);
-  //   this.setState({
-  //     moment: nextProps.moment,
-  //   });
-  // }
+  componentWillReceiveProps(nextProps) {
+    console.log("MomentContainer componentWillReceiveProps");
+    this.fetchMoments({username: nextProps.params.username});
+    this.scrollToTop();
+  }
 
   changeMoment(moment) {
     console.log("MomentContainer changeMoment", moment);
@@ -83,12 +80,24 @@ export default class MomentContainer extends React.Component {
     this.scrollToTop();
   }
 
+  changeUsername(username) {
+    console.log("MomentContainer changeUsername", username);
+
+    this.fetchMoments({username: username});
+
+    this.scrollToTop();
+  }
+
 
   render() {
     console.log("MomentContainer moments ", this.state.moments);
     return (
       <div className={style.container}>
-        <MomentList moments={this.state.moments} selectedMoment={this.changeMoment.bind(this)}></MomentList>
+        <MomentList
+          moments={this.state.moments}
+          selectedMoment={this.changeMoment.bind(this)}
+          selectedUsername={this.changeUsername.bind(this)}>
+        </MomentList>
         <Moment ref="widget" moment={this.state.moment}></Moment>
       </div>
     );
