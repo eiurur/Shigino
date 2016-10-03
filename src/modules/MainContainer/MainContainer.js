@@ -22,8 +22,10 @@ export default class MainContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     console.log("MainContainer componentWillReceiveProps", nextProps);
+    console.log("MainContainer componentWillReceiveProps", nextProps.params);
     if(nextProps.params) {
       if(nextProps.params.username) this.handleSubmit({username: nextProps.params.username});
+      else this.handleSubmit();
     }
   }
 

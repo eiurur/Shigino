@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import SearchForm from '../SearchForm/SearchForm';
+import style from './SearchBox.scss';
 
 export default class SearchBox extends React.Component {
   constructor(props) {
@@ -54,7 +55,7 @@ export default class SearchBox extends React.Component {
 
   render() {
     return (
-      <div className='searchBox'>
+      <div className={style.container}>
         <SearchForm onUrlSubmit={this.handleUrlSubmit.bind(this)} />
       </div>
     );

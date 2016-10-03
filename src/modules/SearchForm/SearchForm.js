@@ -19,24 +19,22 @@ export default class SearchForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     var word = this.state.word.trim();
-    if (!word) {
-      return;
-    }
-
     this.props.onWordSubmit({word: word});
     // this.setState({word: ''});
   }
 
   render() {
     return (
-      <form className="searchForm" onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          placeholder="Input search word..."
-          value={this.state.word}
-          onChange={this.handleTextChange}
-          />
-      </form>
+      <div className={style.container}>
+        <form  onSubmit={this.handleSubmit}>
+          <input
+            type="text"
+            placeholder="Input search word..."
+            value={this.state.word}
+            onChange={this.handleTextChange}
+            />
+        </form>
+      </div>
     );
   }
 }

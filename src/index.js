@@ -10,10 +10,10 @@ import './index.scss';
 
 render((
   <Router history={browserHistory}>
-    <Route name="App" path="/" component={MainContainer}>
-      <Route path="/" component={MainContainer}/>
+    <Route path="/" component={App}>
+      <Route path="/main" component={MainContainer}/>
       <Route path="/lists" component={MomentContainer}/>
-      <Route path="/user/@:username" component={MomentContainer}/>
+      <Route path="/user/@:username" component={MainContainer}/>
     </Route>
   </Router>
 ), document.getElementById('app'));

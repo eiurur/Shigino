@@ -1,0 +1,25 @@
+.container {
+  margin: 4rem 0;
+}
+
+input[type="text"] {
+  font: bold 12px Arial,Helvetica,Sans-serif;
+  color: #7a9199;
+  box-shadow: none;
+  box-sizing: content-box;;
+  margin: 0 0 20px 0;
+  padding: 0;
+  // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #7a9199;
+  border-radius: 0;
+  outline: none;
+  height: 3rem;
+  width: 50%;
+  transition: all 0.7s ease 0s;
+}
+
+input[type="text"]:focus {
+  width: 100%;
+}
