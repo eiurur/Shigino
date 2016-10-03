@@ -5,7 +5,7 @@ export default class SearchForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: ""
+      word: ''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -13,18 +13,18 @@ export default class SearchForm extends React.Component {
   }
 
   handleTextChange(e) {
-    this.setState({url: e.target.value});
+    this.setState({word: e.target.value});
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    var url = this.state.url.trim();
-    if (!url) {
+    var word = this.state.word.trim();
+    if (!word) {
       return;
     }
 
-    this.props.onUrlSubmit(url);
-    this.setState({url: ""});
+    this.props.onWordSubmit({word: word});
+    // this.setState({word: ''});
   }
 
   render() {
@@ -32,9 +32,8 @@ export default class SearchForm extends React.Component {
       <form className="searchForm" onSubmit={this.handleSubmit}>
         <input
           type="text"
-          pattern="https?://.+"
-          placeholder="Input url..."
-          value={this.state.url}
+          placeholder="Input search word..."
+          value={this.state.word}
           onChange={this.handleTextChange}
           />
       </form>

@@ -21,6 +21,7 @@ module.exports = (app) => {
   app.get('/api/tweets/moments', function(req, res) {
     const opts = {
       query: {},
+      word: req.query.word || '',
       limit: req.query.limit - 0,
       skip: req.query.skip - 0,
       sort: {count: -1},

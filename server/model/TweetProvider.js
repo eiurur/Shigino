@@ -49,7 +49,15 @@ module.exports = class TweetProvider extends BaseProvider {
   find(params) {
     return new Promise(function(resolve, reject) {
       console.log(params);
-      return Tweet.find(params.query)
+
+      const condition = [Object.assign(params.query,
+        {
+          description: new RegExp(params.word, 'i'),
+          title: new RegExp(params.word, 'i')
+        }
+      )];
+
+      return Tweet.find({'$or': condition})
       .limit(params.limit)
       .skip(params.skip)
       .sort(params.sort)
@@ -95,8 +103,6 @@ module.exports = class TweetProvider extends BaseProvider {
 
   upsert(params) {
     return new Promise((resolve, reject) => {
-      console.log("\n============> DonePost flucateNumDone\n");
-      console.log(params);
       let query = {moment_id: params.moment_id};
       let data = Object.assign(params, {
         updated_at: Date.now(),

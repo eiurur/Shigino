@@ -43,9 +43,9 @@ module.exports = class BaseProvider {
   findOneAndUpdate(query, data, options) {
     return new Promise((resolve, reject) => {
       console.log(chalk.green(`BaseProvider ${this.Model.modelName} findOneAndUpdate`));
-      console.log(query);
-      console.log(data);
-      console.log(options);
+      // console.log(query);
+      // console.log(data);
+      // console.log(options);
       console.time(`${this.Model.modelName} findOneAndUpdate`);
       return this.Model.findOneAndUpdate(query, data, options, (err, doc) => {
         console.timeEnd(`${this.Model.modelName} findOneAndUpdate`);

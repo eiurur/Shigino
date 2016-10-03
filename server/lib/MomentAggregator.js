@@ -4,6 +4,7 @@ const twit                 = require('twit');
 const path                 = require('path');
 const client               = require('cheerio-httpcli');
 const ModelProviderFactory = require(path.resolve('server', 'model', 'ModelProviderFactory'));
+const MorphologicalAnalyzer = require(path.resolve('server', 'lib', 'MorphologicalAnalyzer'));
 
 
 module.exports = class MomentAggregator {
@@ -57,12 +58,12 @@ module.exports = class MomentAggregator {
   openStream() {
     this.stream = this.T.stream('statuses/filter', {'track': this.keyword, 'language': 'ja'});
     this.stream.on('tweet', (tweet) => {
-      console.log(tweet.entities.urls);
+      // console.log(tweet.entities.urls);
 
 
       if (!this.isMomentTweet(tweet)) return;
 
-      console.log(tweet);
+      // console.log(tweet);
       const moment_expanded_url = this.getMomentTweet(tweet).expanded_url;
 
       this.scrapeMomentInfo(moment_expanded_url)
@@ -77,6 +78,7 @@ module.exports = class MomentAggregator {
           description: momentInfo.description,
           thumbnail: momentInfo.thumbnail,
         };
+        // console.log(MorphologicalAnalyzer.tokenize(momentInfo.description).then( result => console.log(result) ).catch(err => console.log(err) ));
         this.TweetProvider.upsert(opts);
       });
 

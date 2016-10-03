@@ -26,14 +26,13 @@ export default class MomentContainer extends React.Component {
 
 
   fetchMoments(params = {}) {
-    this.clearState();
 
     axios({
       url: this.url,
       method: 'get',
       responseType: 'json',
       params: Object.assign(params, {
-        skip: 0
+        skip: 0,
         limit: 30
       })
     })
@@ -52,35 +51,64 @@ export default class MomentContainer extends React.Component {
     });
   }
 
-  componentDidMount() {
-    console.log("this.props.params", this.props.params);
-    this.fetchMoments({username: this.props.params.username});
-  }
+  // componentDidMount() {
+  //   console.log("MomentContainer compoentDidMount this.props", this.props);
+  //     // this.setState({
+  //     //   moment: this.props.moments[0],
+  //     //   moments: this.props.moments
+  //     // });
+  //   if(this.props.params == undefined) return;
+
+  //   this.fetchMoments({username: this.props.params.username});
+  // }
 
   scrollToTop() {
     window.scroll(0, 0);
   }
 
+  componentWillMount() {
+    console.log("MomentContainer componentWillMount", this.state);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("MomentContainer componentDidUpdate", this.state);
+    console.log("MomentContainer componentDidUpdate", this.prevProps);
+    console.log("MomentContainer componentDidUpdate", this.prevState);
+  }
+
+
   componentWillReceiveProps(nextProps) {
-    console.log("MomentContainer componentWillReceiveProps");
+    console.log("MomentContainer componentWillReceiveProps", nextProps);
+    console.log("MomentContainer componentWillReceiveProps", this.state);
+    if(nextProps.moments !== undefined) {
+      this.setState({
+        moment: nextProps.moments[0],
+        moments: nextProps.moments,
+      });
+      this.rerenderMoment(nextProps.moments[0]);
+      return;
+    }
+    console.log("nextProps.momnets === undefined", nextProps.momnets === undefined);
     this.fetchMoments({username: nextProps.params.username});
     this.scrollToTop();
   }
 
-  changeMoment(moment) {
-    console.log("MomentContainer changeMoment", moment);
-
+  rerenderMoment(moment) {
     // HACK: 一度DOMを削除して再生成する方法でしかTwitterWidgetを更新できなかった。
     ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(this.refs.widget));
 
     // setStateすると二度レンダリングが走るのでこれでよい
     this.state.moment = moment;
     ReactDOM.render(<Moment moment={this.state.moment}></Moment>,  ReactDOM.findDOMNode(this.refs.widget));
+  }
 
+  onSelectMoment(moment) {
+    console.log("MomentContainer changeMoment", moment);
+    this.rerenderMoment(moment);
     this.scrollToTop();
   }
 
-  changeUsername(username) {
+  onSelectUsername(username) {
     console.log("MomentContainer changeUsername", username);
 
     this.fetchMoments({username: username});
@@ -90,13 +118,13 @@ export default class MomentContainer extends React.Component {
 
 
   render() {
-    console.log("MomentContainer moments ", this.state.moments);
+    console.log("MomentContainer render ", this.state.moments);
     return (
       <div className={style.container}>
         <MomentList
           moments={this.state.moments}
-          selectedMoment={this.changeMoment.bind(this)}
-          selectedUsername={this.changeUsername.bind(this)}>
+          selectedMoment={this.onSelectMoment.bind(this)}
+          selectedUsername={this.onSelectUsername.bind(this)}>
         </MomentList>
         <Moment ref="widget" moment={this.state.moment}></Moment>
       </div>

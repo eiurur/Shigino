@@ -9,3 +9,13 @@ Chika
 
     npm i
     npm run dev
+
+# API
+
+### `/api/tweets/moments`
+
+- skip
+- limit
+
+### `/api/tweets/moments/@:username`
+
