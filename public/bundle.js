@@ -66,9 +66,9 @@
 
 	var _MomentContainer2 = _interopRequireDefault(_MomentContainer);
 
-	__webpack_require__(277);
+	__webpack_require__(280);
 
-	__webpack_require__(279);
+	__webpack_require__(282);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -77,10 +77,10 @@
 	  { history: _reactRouter.browserHistory },
 	  _react2.default.createElement(
 	    _reactRouter.Route,
-	    { name: 'App', path: '/', component: _MainContainer2.default },
-	    _react2.default.createElement(_reactRouter.Route, { path: '/', component: _MainContainer2.default }),
+	    { path: '/', component: _App2.default },
+	    _react2.default.createElement(_reactRouter.Route, { path: '/main', component: _MainContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/lists', component: _MomentContainer2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/user/@:username', component: _MomentContainer2.default })
+	    _react2.default.createElement(_reactRouter.Route, { path: '/user/@:username', component: _MainContainer2.default })
 	  )
 	), document.getElementById('app'));
 
@@ -27159,7 +27159,7 @@
 	              { className: _App2.default.item },
 	              _react2.default.createElement(
 	                _reactRouter.Link,
-	                { to: '/', className: _App2.default.link, activeClassName: 'active' },
+	                { to: '/main', className: _App2.default.link, activeClassName: 'active' },
 	                'Chika'
 	              )
 	            ),
@@ -27168,8 +27168,8 @@
 	              { className: _App2.default.item },
 	              _react2.default.createElement(
 	                _reactRouter.Link,
-	                { to: '/lists', className: _App2.default.link, activeClassName: 'active' },
-	                'Lists'
+	                { to: '/main', className: _App2.default.link, activeClassName: 'active' },
+	                'main'
 	              )
 	            )
 	          )
@@ -27568,7 +27568,7 @@
 
 	var _MomentContainer2 = _interopRequireDefault(_MomentContainer);
 
-	var _MainContainer = __webpack_require__(275);
+	var _MainContainer = __webpack_require__(278);
 
 	var _MainContainer2 = _interopRequireDefault(_MainContainer);
 
@@ -27591,6 +27591,7 @@
 	    _this.state = {
 	      word: '',
 	      moments: [],
+	      count: 0,
 	      err: null
 	    };
 	    _this.url = '/api/tweets/moments';
@@ -27606,8 +27607,9 @@
 	    key: "componentWillReceiveProps",
 	    value: function componentWillReceiveProps(nextProps) {
 	      console.log("MainContainer componentWillReceiveProps", nextProps);
+	      console.log("MainContainer componentWillReceiveProps", nextProps.params);
 	      if (nextProps.params) {
-	        if (nextProps.params.username) this.handleSubmit({ username: nextProps.params.username });
+	        if (nextProps.params.username) this.handleSubmit({ username: nextProps.params.username });else this.handleSubmit();
 	      }
 	    }
 	  }, {
@@ -27626,13 +27628,16 @@
 	        params: {
 	          username: params.username,
 	          word: params.word,
-	          limit: 30,
-	          skip: 0
+	          skip: params.currentPage - 1 || 0,
+	          limit: 30
 	        }
 	      }).then(function (res) {
 	        console.log('MainContainer fetch ', res.data);
 	        if (res.status !== 200) throw new Error(res.data);
-	        _this2.setState({ moments: res.data.moments });
+	        _this2.setState({
+	          moments: res.data.moments,
+	          count: res.data.count
+	        });
 	      }).catch(function (err) {
 	        _this2.setState({ err: err });
 	      });
@@ -27645,7 +27650,7 @@
 	        "div",
 	        { className: _MainContainer2.default.container },
 	        _react2.default.createElement(_SearchForm2.default, { onWordSubmit: this.handleSubmit.bind(this) }),
-	        _react2.default.createElement(_MomentContainer2.default, { moments: this.state.moments })
+	        _react2.default.createElement(_MomentContainer2.default, { moments: this.state.moments, count: this.state.count })
 	      );
 	    }
 	  }]);
@@ -29047,10 +29052,6 @@
 	    value: function handleSubmit(e) {
 	      e.preventDefault();
 	      var word = this.state.word.trim();
-	      if (!word) {
-	        return;
-	      }
-
 	      this.props.onWordSubmit({ word: word });
 	      // this.setState({word: ''});
 	    }
@@ -29058,14 +29059,18 @@
 	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "form",
-	        { className: "searchForm", onSubmit: this.handleSubmit },
-	        _react2.default.createElement("input", {
-	          type: "text",
-	          placeholder: "Input search word...",
-	          value: this.state.word,
-	          onChange: this.handleTextChange
-	        })
+	        "div",
+	        { className: _SearchForm2.default.container },
+	        _react2.default.createElement(
+	          "form",
+	          { onSubmit: this.handleSubmit },
+	          _react2.default.createElement("input", {
+	            type: "text",
+	            placeholder: "Input search word...",
+	            value: this.state.word,
+	            onChange: this.handleTextChange
+	          })
+	        )
 	      );
 	    }
 	  }]);
@@ -29110,10 +29115,12 @@
 
 
 	// module
-	exports.push([module.id, "", ""]);
+	exports.push([module.id, ".src-modules-SearchForm-SearchForm---container---3YRQ9 {\n  margin: 4rem 0; }\n\ninput[type=\"text\"] {\n  font: bold 12px Arial,Helvetica,Sans-serif;\n  color: #7a9199;\n  box-shadow: none;\n  box-sizing: content-box;\n  margin: 0 0 20px 0;\n  padding: 0;\n  background-color: transparent;\n  border: none;\n  border-bottom: 1px solid #7a9199;\n  border-radius: 0;\n  outline: none;\n  height: 3rem;\n  width: 50%;\n  transition: all 0.7s ease 0s; }\n\ninput[type=\"text\"]:focus {\n  width: 100%; }\n", ""]);
 
 	// exports
-
+	exports.locals = {
+		"container": "src-modules-SearchForm-SearchForm---container---3YRQ9"
+	};
 
 /***/ },
 /* 266 */
@@ -29147,7 +29154,7 @@
 
 	var _MomentList2 = _interopRequireDefault(_MomentList);
 
-	var _MomentContainer = __webpack_require__(273);
+	var _MomentContainer = __webpack_require__(276);
 
 	var _MomentContainer2 = _interopRequireDefault(_MomentContainer);
 
@@ -29170,6 +29177,7 @@
 	    _this.state = {
 	      moment: {},
 	      moments: [],
+	      count: 0,
 	      err: ''
 	    };
 	    _this.url = '/api/tweets/moments';
@@ -29182,6 +29190,7 @@
 	      this.state = {
 	        moment: {},
 	        moments: [],
+	        count: 0,
 	        err: ''
 	      };
 	    }
@@ -29198,7 +29207,7 @@
 	        method: 'get',
 	        responseType: 'json',
 	        params: Object.assign(params, {
-	          skip: 0,
+	          skip: (params.currentPage - 1) * 30 || 0,
 	          limit: 30
 	        })
 	      }).then(function (res) {
@@ -29207,7 +29216,8 @@
 	        if (res.status !== 200) throw new Error(res.data);
 	        _this2.setState({
 	          moment: res.data.moments[0],
-	          moments: res.data.moments
+	          moments: res.data.moments,
+	          count: res.data.count
 	        });
 	        _this2.changeMoment(res.data.moments[0]);
 	      }).catch(function (err) {
@@ -29251,7 +29261,8 @@
 	      if (nextProps.moments !== undefined) {
 	        this.setState({
 	          moment: nextProps.moments[0],
-	          moments: nextProps.moments
+	          moments: nextProps.moments,
+	          count: nextProps.count
 	        });
 	        this.rerenderMoment(nextProps.moments[0]);
 	        return;
@@ -29287,6 +29298,13 @@
 	      this.scrollToTop();
 	    }
 	  }, {
+	    key: "onHandlePagination",
+	    value: function onHandlePagination(currentPage) {
+	      console.log("MomentContainer handlePagination currentPage", currentPage);
+	      this.fetchMoments({ currentPage: currentPage });
+	      this.scrollToTop();
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      console.log("MomentContainer render ", this.state.moments);
@@ -29295,8 +29313,10 @@
 	        { className: _MomentContainer2.default.container },
 	        _react2.default.createElement(_MomentList2.default, {
 	          moments: this.state.moments,
+	          count: this.state.count,
 	          selectedMoment: this.onSelectMoment.bind(this),
-	          selectedUsername: this.onSelectUsername.bind(this) }),
+	          selectedUsername: this.onSelectUsername.bind(this),
+	          handlePagination: this.onHandlePagination.bind(this) }),
 	        _react2.default.createElement(_Moment2.default, { ref: "widget", moment: this.state.moment })
 	      );
 	    }
@@ -29480,7 +29500,11 @@
 
 	var _Moment2 = _interopRequireDefault(_Moment);
 
-	var _MomentList = __webpack_require__(271);
+	var _Pagination = __webpack_require__(271);
+
+	var _Pagination2 = _interopRequireDefault(_Pagination);
+
+	var _MomentList = __webpack_require__(274);
 
 	var _MomentList2 = _interopRequireDefault(_MomentList);
 
@@ -29501,7 +29525,8 @@
 	    var _this = _possibleConstructorReturn(this, (MomentList.__proto__ || Object.getPrototypeOf(MomentList)).call(this, props));
 
 	    _this.state = {
-	      moments: _this.props.moments
+	      moments: _this.props.moments,
+	      count: _this.props.count
 	    };
 	    return _this;
 	  }
@@ -29521,7 +29546,8 @@
 	      console.log("MomentList componentWillReceiveProps");
 	      console.log(this.props.moments, nextProps.moments);
 	      this.state = {
-	        moments: nextProps.moments
+	        moments: nextProps.moments,
+	        count: nextProps.count
 	      };
 	    }
 	  }, {
@@ -29535,6 +29561,12 @@
 	    value: function handleChangeUsername(username) {
 	      console.log("MomentList handleChangeUsername ", username);
 	      this.props.selectedUsername(username);
+	    }
+	  }, {
+	    key: 'handlePagination',
+	    value: function handlePagination(currentPage) {
+	      console.log("MomentList handlePagination currentPage", currentPage);
+	      this.props.handlePagination(currentPage);
 	    }
 	  }, {
 	    key: 'render',
@@ -29585,7 +29617,8 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _MomentList2.default.container },
-	        momentNodes
+	        momentNodes,
+	        _react2.default.createElement(_Pagination2.default, { count: this.state.count, onHandlePagination: this.handlePagination.bind(this) })
 	      );
 	    }
 	  }]);
@@ -29599,10 +29632,155 @@
 /* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Pagination = __webpack_require__(272);
+
+	var _Pagination2 = _interopRequireDefault(_Pagination);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Pagination = function (_React$Component) {
+	  _inherits(Pagination, _React$Component);
+
+	  function Pagination(props) {
+	    _classCallCheck(this, Pagination);
+
+	    var _this = _possibleConstructorReturn(this, (Pagination.__proto__ || Object.getPrototypeOf(Pagination)).call(this, props));
+
+	    _this.state = {
+	      currentPage: 1,
+	      pageSize: 1
+	    };
+	    return _this;
+	  }
+
+	  _createClass(Pagination, [{
+	    key: "componentWillReceiveProps",
+	    value: function componentWillReceiveProps(nextProps) {
+	      console.log("Pagination componentWillReceiveProps", nextProps);
+	      console.log("Pagination componentWillReceiveProps", nextProps.params);
+	      console.log("Pagination componentWillReceiveProps", this.state);
+	      // if(nextProps.count === undefined) return;
+	      this.setState({
+	        pageSize: Math.ceil(nextProps.count / 30)
+	      });
+	    }
+	  }, {
+	    key: "handlePrevPage",
+	    value: function handlePrevPage() {
+	      if (this.state.currentPage - 1 <= 0) return;
+	      this.setState({
+	        currentPage: this.state.currentPage - 1
+	      });
+	      console.log("Pagination page", this.state);
+	      this.props.onHandlePagination(this.state.currentPage - 1);
+	    }
+	  }, {
+	    key: "handleNextPage",
+	    value: function handleNextPage() {
+	      if (this.state.currentPage + 1 > this.pageSize) return;
+	      this.setState({
+	        currentPage: this.state.currentPage + 1
+	      });
+	      console.log("Pagination page", this.state);
+	      this.props.onHandlePagination(this.state.currentPage + 1);
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: _Pagination2.default.container },
+	        _react2.default.createElement(
+	          "span",
+	          { className: _Pagination2.default.arrow, onClick: this.handlePrevPage.bind(this) },
+	          "\uFF1C"
+	        ),
+	        this.state.currentPage,
+	        " / ",
+	        this.state.pageSize,
+	        _react2.default.createElement(
+	          "span",
+	          { className: _Pagination2.default.arrow, onClick: this.handleNextPage.bind(this) },
+	          "\uFF1E"
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Pagination;
+	}(_react2.default.Component);
+
+	exports.default = Pagination;
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(272);
+	var content = __webpack_require__(273);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(239)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./Pagination.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./Pagination.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(238)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".src-modules-Pagination-Pagination---container---1d791 {\n  display: flex;\n  justify-content: space-between;\n  line-height: 6rem;\n  font-size: 1.5rem; }\n\n.src-modules-Pagination-Pagination---arrow---3-dKk {\n  cursor: pointer;\n  transition: color ease; }\n  .src-modules-Pagination-Pagination---arrow---3-dKk:hover {\n    color: #d1d9db; }\n", ""]);
+
+	// exports
+	exports.locals = {
+		"container": "src-modules-Pagination-Pagination---container---1d791",
+		"arrow": "src-modules-Pagination-Pagination---arrow---3-dKk"
+	};
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(275);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(239)(content, {});
@@ -29622,7 +29800,7 @@
 	}
 
 /***/ },
-/* 272 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(238)();
@@ -29643,13 +29821,13 @@
 	};
 
 /***/ },
-/* 273 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(274);
+	var content = __webpack_require__(277);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(239)(content, {});
@@ -29669,7 +29847,7 @@
 	}
 
 /***/ },
-/* 274 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(238)();
@@ -29685,13 +29863,13 @@
 	};
 
 /***/ },
-/* 275 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(276);
+	var content = __webpack_require__(279);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(239)(content, {});
@@ -29711,7 +29889,7 @@
 	}
 
 /***/ },
-/* 276 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(238)();
@@ -29725,13 +29903,13 @@
 
 
 /***/ },
-/* 277 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(278);
+	var content = __webpack_require__(281);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(239)(content, {});
@@ -29751,7 +29929,7 @@
 	}
 
 /***/ },
-/* 278 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(238)();
@@ -29765,13 +29943,13 @@
 
 
 /***/ },
-/* 279 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(280);
+	var content = __webpack_require__(283);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(239)(content, {});
@@ -29791,7 +29969,7 @@
 	}
 
 /***/ },
-/* 280 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(238)();
@@ -29799,7 +29977,7 @@
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\nbody {\n  color: #000;\n  font-family: YuGothic, 'Yu Gothic', '\\6E38\\30B4\\30B7\\30C3\\30AF\\4F53', '\\6E38\\30B4\\30B7\\30C3\\30AF', '\\30D2\\30E9\\30AE\\30CE\\89D2\\30B4   Pro W3', 'Hiragino Kaku Gothic Pro', '\\30E1\\30A4\\30EA\\30AA', 'Meiryo', 'MSP\\30B4\\30B7\\30C3\\30AF', 'Osaka', 'MS PGothic', 'Arial', 'Helvetica', 'Verdana', 'sans-serif';\n  font-size: 1rem;\n  font-weight: 400;\n  margin-top: 0;\n  line-height: 1.4;\n  margin: 1rem;\n  background: #282c34; }\n\nheader {\n  width: 100%; }\n\nnav {\n  margin: 2rem 0; }\n\nnav ul {\n  display: flex;\n  width: 100%; }\n\nnav li:first-child {\n  margin-right: auto; }\n\na {\n  text-decoration: none;\n  cursor: pointer;\n  color: #7a9199; }\n\ninput[type=\"text\"] {\n  border: 1px solid #d1d1d1;\n  font: bold 12px Arial,Helvetica,Sans-serif;\n  color: #bebebe;\n  width: 320px;\n  padding: 6px 15px 6px 15px;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;\n  transition: all 0.7s ease 0s; }\n\ninput[type=\"text\"]:focus {\n  width: 50%; }\n\nh1 {\n  font-size: 2rem;\n  margin: 0.4rem 0; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\nbody {\n  color: #000;\n  font-family: YuGothic, 'Yu Gothic', '\\6E38\\30B4\\30B7\\30C3\\30AF\\4F53', '\\6E38\\30B4\\30B7\\30C3\\30AF', '\\30D2\\30E9\\30AE\\30CE\\89D2\\30B4   Pro W3', 'Hiragino Kaku Gothic Pro', '\\30E1\\30A4\\30EA\\30AA', 'Meiryo', 'MSP\\30B4\\30B7\\30C3\\30AF', 'Osaka', 'MS PGothic', 'Arial', 'Helvetica', 'Verdana', 'sans-serif';\n  font-size: 1rem;\n  font-weight: 400;\n  margin-top: 0;\n  line-height: 1.4;\n  margin: 1rem;\n  background: #282c34; }\n\nheader {\n  width: 100%; }\n\nnav {\n  margin: 2rem 0; }\n\nnav ul {\n  display: flex;\n  width: 100%; }\n\nnav li:first-child {\n  margin-right: auto; }\n\na {\n  text-decoration: none;\n  cursor: pointer;\n  color: #7a9199; }\n\nh1 {\n  font-size: 2rem;\n  margin: 0.4rem 0; }\n", ""]);
 
 	// exports
 

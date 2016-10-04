@@ -2,6 +2,7 @@ import React from "react";
 import axios from 'axios';
 import { Link } from 'react-router';
 import Moment from "../Moment/Moment";
+import Pagination from "../Pagination/Pagination";
 import style from "./MomentList.scss";
 
 export default class MomentList extends React.Component {
@@ -9,6 +10,7 @@ export default class MomentList extends React.Component {
     super(props);
     this.state = {
       moments: this.props.moments,
+      count: this.props.count,
     };
   }
 
@@ -24,6 +26,7 @@ export default class MomentList extends React.Component {
     console.log(this.props.moments, nextProps.moments);
     this.state = {
       moments: nextProps.moments,
+      count: nextProps.count,
     };
   }
 
@@ -35,6 +38,11 @@ export default class MomentList extends React.Component {
   handleChangeUsername(username) {
     console.log("MomentList handleChangeUsername ", username);
     this.props.selectedUsername(username);
+  }
+
+  handlePagination(currentPage) {
+    console.log("MomentList handlePagination currentPage", currentPage);
+    this.props.handlePagination(currentPage);
   }
 
 
@@ -62,6 +70,7 @@ export default class MomentList extends React.Component {
     return (
       <div className={style.container}>
         {momentNodes}
+        <Pagination count={this.state.count} onHandlePagination={this.handlePagination.bind(this)}></Pagination>
       </div>
     );
   }

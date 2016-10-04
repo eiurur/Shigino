@@ -32,7 +32,7 @@ module.exports = (app) => {
     const TweetProvider = ModelProviderFactory.create('Tweet');
     TweetProvider.find(opts)
     .then(moments => {
-      res.send({moments: moments});
+      res.send(moments);
     })
     .catch( err => res.status(400).send(err));
   });

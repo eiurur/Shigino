@@ -11,6 +11,7 @@ export default class MainContainer extends React.Component {
     this.state = {
       word: '',
       moments: [],
+      count: 0,
       err: null
     };
     this.url = '/api/tweets/moments';
@@ -39,14 +40,17 @@ export default class MainContainer extends React.Component {
       params: {
         username: params.username,
         word: params.word,
+        skip: (params.currentPage - 1) || 0,
         limit: 30,
-        skip: 0
       }
     })
     .then( res => {
       console.log('MainContainer fetch ', res.data);
       if(res.status !== 200) throw new Error(res.data);
-      this.setState({moments: res.data.moments});
+      this.setState({
+        moments: res.data.moments,
+        count: res.data.count,
+      });
     })
     .catch( err => {
       this.setState({err: err});
@@ -58,7 +62,7 @@ export default class MainContainer extends React.Component {
     return (
       <div className={style.container}>
         <SearchForm onWordSubmit={this.handleSubmit.bind(this)}></SearchForm>
-        <MomentContainer moments={this.state.moments}></MomentContainer>
+        <MomentContainer moments={this.state.moments} count={this.state.count}></MomentContainer>
       </div>
     );
   }

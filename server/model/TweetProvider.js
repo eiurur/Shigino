@@ -57,27 +57,42 @@ module.exports = class TweetProvider extends BaseProvider {
         }
       )];
 
-      return Tweet.find({'$or': condition})
-      .limit(params.limit)
-      .skip(params.skip)
-      .sort(params.sort)
-      .exec(function(err, tweets) {
-        if (err) { return reject(err); }
-        return resolve(tweets);
+      Promise.all([
+        Tweet.find({'$or': condition}).limit(params.limit).skip(params.skip).sort(params.sort),
+        Tweet.find({'$or': condition}).count().exec()
+      ]).then( results => {
+        console.log(results);
+        return resolve({moments: results[0], count: results[1]});
       });
+      // return Tweet.find({'$or': condition})
+      // .limit(params.limit)
+      // .skip(params.skip)
+      // .sort(params.sort)
+      // .exec(function(err, tweets) {
+      //   if (err) { return reject(err); }
+      //   return resolve(tweets);
+      // });
     });
   }
 
   findByUsername(params) {
     return new Promise(function(resolve, reject) {
-      return Tweet.find({username: params.username})
-      .limit(params.limit)
-      .skip(params.skip)
-      .sort(params.sort)
-      .exec(function(err, tweet) {
-        if (err) { return reject(err); }
-        return resolve(tweet);
+
+      Promise.all([
+        Tweet.find({username: params.username}).limit(params.limit).skip(params.skip).sort(params.sort),
+        Tweet.find({username: params.username}).count().exec()
+      ]).then( results => {
+        console.log(results);
+        return resolve({moments: results[0], count: results[1]});
       });
+      // return Tweet.find({username: params.username})
+      // .limit(params.limit)
+      // .skip(params.skip)
+      // .sort(params.sort)
+      // .exec(function(err, tweet) {
+      //   if (err) { return reject(err); }
+      //   return resolve(tweet);
+      // });
     });
   }
 

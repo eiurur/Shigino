@@ -11,6 +11,7 @@ export default class MomentContainer extends React.Component {
     this.state = {
       moment: {},
       moments: [],
+      count: 0,
       err: ''
     };
     this.url = '/api/tweets/moments';
@@ -20,6 +21,7 @@ export default class MomentContainer extends React.Component {
     this.state = {
       moment: {},
       moments: [],
+      count: 0,
       err: ''
     };
   }
@@ -32,7 +34,7 @@ export default class MomentContainer extends React.Component {
       method: 'get',
       responseType: 'json',
       params: Object.assign(params, {
-        skip: 0,
+        skip: (params.currentPage - 1) * 30 || 0,
         limit: 30
       })
     })
@@ -42,7 +44,8 @@ export default class MomentContainer extends React.Component {
       if(res.status !== 200) throw new Error(res.data);
       this.setState({
         moment: res.data.moments[0],
-        moments: res.data.moments
+        moments: res.data.moments,
+        count: res.data.count,
       });
       this.changeMoment(res.data.moments[0]);
     })
@@ -84,6 +87,7 @@ export default class MomentContainer extends React.Component {
       this.setState({
         moment: nextProps.moments[0],
         moments: nextProps.moments,
+        count: nextProps.count,
       });
       this.rerenderMoment(nextProps.moments[0]);
       return;
@@ -116,6 +120,13 @@ export default class MomentContainer extends React.Component {
     this.scrollToTop();
   }
 
+  onHandlePagination(currentPage) {
+    console.log("MomentContainer handlePagination currentPage", currentPage);
+    this.fetchMoments({currentPage: currentPage});
+    this.scrollToTop();
+
+  }
+
 
   render() {
     console.log("MomentContainer render ", this.state.moments);
@@ -123,8 +134,10 @@ export default class MomentContainer extends React.Component {
       <div className={style.container}>
         <MomentList
           moments={this.state.moments}
+          count={this.state.count}
           selectedMoment={this.onSelectMoment.bind(this)}
-          selectedUsername={this.onSelectUsername.bind(this)}>
+          selectedUsername={this.onSelectUsername.bind(this)}
+          handlePagination={this.onHandlePagination.bind(this)}>
         </MomentList>
         <Moment ref="widget" moment={this.state.moment}></Moment>
       </div>

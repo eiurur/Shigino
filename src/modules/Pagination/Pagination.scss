@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    line-height: 6rem;
+    font-size: 1.5rem;
+}
+
+.arrow {
+  cursor: pointer;
+  transition: color ease;
+  &:hover {
+    color: lighten(#7a9199, 30%);
+  }
+}
