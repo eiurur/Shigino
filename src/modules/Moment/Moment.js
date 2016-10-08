@@ -31,7 +31,6 @@ export default class Moment extends React.Component {
     this.initialized();
   }
 
-
   initialized() {
     this.setState({ initialized: true });
   }

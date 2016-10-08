@@ -1,4 +1,6 @@
 import React from 'react';
+import {browserHistory} from 'react-router';
+import {getParam, replaceParam} from 'url-params-helper';
 import style from './SearchForm.scss';
 
 export default class SearchForm extends React.Component {
@@ -19,8 +21,7 @@ export default class SearchForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     var word = this.state.word.trim();
-    this.props.onWordSubmit({word: word});
-    // this.setState({word: ''});
+    browserHistory.push(replaceParam('word', word, replaceParam('currentPage', 1, '/main')));
   }
 
   render() {

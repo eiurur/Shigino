@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { Link } from 'react-router';
 import Moment from '../Moment/Moment';
 import Pagination from '../Pagination/Pagination';
@@ -12,13 +11,6 @@ export default class MomentList extends React.Component {
       moments: this.props.moments,
       count: this.props.count,
     };
-  }
-
-  // ページを読み込んだときに呼ばれる
-  componentDidMount() {
-    console.log('MomentList componentDidMount');
-    console.log(this.props, this.state);
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,17 +26,6 @@ export default class MomentList extends React.Component {
     console.log('MomentList handleChange ', moment);
     this.props.selectedMoment(moment);
   }
-
-  handleChangeUsername(username) {
-    console.log('MomentList handleChangeUsername ', username);
-    this.props.selectedUsername(username);
-  }
-
-  handlePagination(currentPage) {
-    console.log('MomentList handlePagination currentPage', currentPage);
-    this.props.handlePagination(currentPage);
-  }
-
 
   render() {
     let momentNodes;

@@ -1,9 +1,9 @@
-import React from "react";
-import axios from "axios";
-import {getParams} from 'url-params-helper';
-import SearchForm from "../SearchForm/SearchForm";
-import MomentContainer from "../MomentContainer/MomentContainer";
-import style from "./MainContainer.scss";
+import React from 'react';
+import axios from 'axios';
+import {getParams, replaceParam} from 'url-params-helper';
+import SearchForm from '../SearchForm/SearchForm';
+import MomentContainer from '../MomentContainer/MomentContainer';
+import style from './MainContainer.scss';
 
 export default class MainContainer extends React.Component {
   constructor(props) {
@@ -19,27 +19,21 @@ export default class MainContainer extends React.Component {
   }
 
   componentDidMount() {
-    console.log("MainContainer componentDidMount", this.props);
+    console.log('MainContainer componentDidMount', this.props);
     const params = Object.assign(this.props.params, getParams());
     this.handleSubmit(params);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("MainContainer componentWillReceiveProps", nextProps);
-    console.log("MainContainer componentWillReceiveProps", nextProps.params);
-    console.log("MainContainer componentWillReceiveProps getParams", getParams());
-    console.log("MainContainer componentWillReceiveProps this.props.location.query", this.props.location.query);
-    // if(nextProps.params) {
-      // if(nextProps.params.username) {
+    console.log('MainContainer componentWillReceiveProps', nextProps.params);
+    console.log('MainContainer componentWillReceiveProps getParams', getParams());
     const params = Object.assign(nextProps.params, getParams());
     this.handleSubmit(params);
-      // }
-      // else this.handleSubmit();
-    // }
   }
 
   handleSubmit(params = {}) {
-    console.log("MainContainer handleSubmit", params);
+    console.log('MainContainer handleSubmit', params);
+      // this.context.history.push(replaceParam('username', params.username));
 
     axios({
       url: this.url,
@@ -66,7 +60,7 @@ export default class MainContainer extends React.Component {
   }
 
   render() {
-    console.log("MainContainer render ");
+    console.log('MainContainer render ');
     return (
       <div className={style.container}>
         <SearchForm onWordSubmit={this.handleSubmit.bind(this)}></SearchForm>

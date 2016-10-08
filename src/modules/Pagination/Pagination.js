@@ -13,10 +13,7 @@ export default class Pagination extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('Pagination componentWillReceiveProps', nextProps);
-    console.log('Pagination componentWillReceiveProps', nextProps.params);
-    console.log('Pagination componentWillReceiveProps', this.state);
-    // if(nextProps.count === undefined) return;
+    console.log('Pagination componentWillReceiveProps ', nextProps);
     this.setState({
       currentPage: getParam('currentPage') - 0 || 1,
       pageSize: Math.ceil(nextProps.count / 30),
