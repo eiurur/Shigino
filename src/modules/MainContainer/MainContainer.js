@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import {getParams} from 'url-params-helper';
 import SearchForm from "../SearchForm/SearchForm";
 import MomentContainer from "../MomentContainer/MomentContainer";
 import style from "./MainContainer.scss";
@@ -18,16 +19,23 @@ export default class MainContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.handleSubmit();
+    console.log("MainContainer componentDidMount", this.props);
+    const params = Object.assign(this.props.params, getParams());
+    this.handleSubmit(params);
   }
 
   componentWillReceiveProps(nextProps) {
     console.log("MainContainer componentWillReceiveProps", nextProps);
     console.log("MainContainer componentWillReceiveProps", nextProps.params);
-    if(nextProps.params) {
-      if(nextProps.params.username) this.handleSubmit({username: nextProps.params.username});
-      else this.handleSubmit();
-    }
+    console.log("MainContainer componentWillReceiveProps getParams", getParams());
+    console.log("MainContainer componentWillReceiveProps this.props.location.query", this.props.location.query);
+    // if(nextProps.params) {
+      // if(nextProps.params.username) {
+    const params = Object.assign(nextProps.params, getParams());
+    this.handleSubmit(params);
+      // }
+      // else this.handleSubmit();
+    // }
   }
 
   handleSubmit(params = {}) {
@@ -40,7 +48,7 @@ export default class MainContainer extends React.Component {
       params: {
         username: params.username,
         word: params.word,
-        skip: (params.currentPage - 1) || 0,
+        skip: (params.currentPage - 1) * 30 || 0,
         limit: 30,
       }
     })

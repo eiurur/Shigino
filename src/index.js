@@ -9,7 +9,8 @@ import './reset.scss';
 import './index.scss';
 
 render((
-  <Router history={browserHistory}>
+  <Router
+  onUpdate={() => window.scrollTo(0, 0)} history={browserHistory}>
     <Route path="/" component={App}>
       <Route path="/main" component={MainContainer}/>
       <Route path="/lists" component={MomentContainer}/>

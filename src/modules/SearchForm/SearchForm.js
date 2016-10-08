@@ -1,5 +1,5 @@
-import React from "react";
-import style from "./SearchForm.scss";
+import React from 'react';
+import style from './SearchForm.scss';
 
 export default class SearchForm extends React.Component {
   constructor(props) {
@@ -28,8 +28,8 @@ export default class SearchForm extends React.Component {
       <div className={style.container}>
         <form  onSubmit={this.handleSubmit}>
           <input
-            type="text"
-            placeholder="Input search word..."
+            type='text'
+            placeholder='Input search word...'
             value={this.state.word}
             onChange={this.handleTextChange}
             />

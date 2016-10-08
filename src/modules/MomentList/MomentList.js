@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router';
-import Moment from "../Moment/Moment";
-import Pagination from "../Pagination/Pagination";
-import style from "./MomentList.scss";
+import Moment from '../Moment/Moment';
+import Pagination from '../Pagination/Pagination';
+import style from './MomentList.scss';
 
 export default class MomentList extends React.Component {
   constructor(props) {
@@ -16,13 +16,13 @@ export default class MomentList extends React.Component {
 
   // ページを読み込んだときに呼ばれる
   componentDidMount() {
-    console.log("MomentList componentDidMount");
+    console.log('MomentList componentDidMount');
     console.log(this.props, this.state);
 
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("MomentList componentWillReceiveProps");
+    console.log('MomentList componentWillReceiveProps');
     console.log(this.props.moments, nextProps.moments);
     this.state = {
       moments: nextProps.moments,
@@ -31,17 +31,17 @@ export default class MomentList extends React.Component {
   }
 
   handleChange(moment) {
-    console.log("MomentList handleChange ", moment);
+    console.log('MomentList handleChange ', moment);
     this.props.selectedMoment(moment);
   }
 
   handleChangeUsername(username) {
-    console.log("MomentList handleChangeUsername ", username);
+    console.log('MomentList handleChangeUsername ', username);
     this.props.selectedUsername(username);
   }
 
   handlePagination(currentPage) {
-    console.log("MomentList handlePagination currentPage", currentPage);
+    console.log('MomentList handlePagination currentPage', currentPage);
     this.props.handlePagination(currentPage);
   }
 
@@ -69,8 +69,11 @@ export default class MomentList extends React.Component {
 
     return (
       <div className={style.container}>
-        {momentNodes}
-        <Pagination count={this.state.count} onHandlePagination={this.handlePagination.bind(this)}></Pagination>
+        <Pagination count={this.state.count}></Pagination>
+        <div className={style.nodes}>
+          {momentNodes}
+        </div>
+        <Pagination count={this.state.count}></Pagination>
       </div>
     );
   }

@@ -1,5 +1,7 @@
-import React from "react";
-import style from "./Pagination.scss";
+import React from 'react';
+import {getParam, replaceParam} from 'url-params-helper';
+import { Link } from 'react-router';
+import style from './Pagination.scss';
 
 export default class Pagination extends React.Component {
   constructor(props) {
@@ -11,39 +13,24 @@ export default class Pagination extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("Pagination componentWillReceiveProps", nextProps);
-    console.log("Pagination componentWillReceiveProps", nextProps.params);
-    console.log("Pagination componentWillReceiveProps", this.state);
+    console.log('Pagination componentWillReceiveProps', nextProps);
+    console.log('Pagination componentWillReceiveProps', nextProps.params);
+    console.log('Pagination componentWillReceiveProps', this.state);
     // if(nextProps.count === undefined) return;
     this.setState({
+      currentPage: getParam('currentPage') - 0 || 1,
       pageSize: Math.ceil(nextProps.count / 30),
     });
   }
 
-  handlePrevPage() {
-    if(this.state.currentPage - 1 <= 0) return;
-     this.setState({
-      currentPage: this.state.currentPage - 1,
-    });
-    console.log("Pagination page", this.state);
-     this.props.onHandlePagination(this.state.currentPage - 1);
-  }
-
-  handleNextPage() {
-    if(this.state.currentPage + 1 > this.pageSize) return;
-     this.setState({
-      currentPage: this.state.currentPage + 1,
-    });
-    console.log("Pagination page", this.state);
-     this.props.onHandlePagination(this.state.currentPage + 1);
-  }
-
   render() {
+    const prevUrl = replaceParam('currentPage', this.state.currentPage - 1);
+    const nextUrl = replaceParam('currentPage', this.state.currentPage + 1);
     return (
       <div className={style.container}>
-        <span className={style.arrow} onClick={this.handlePrevPage.bind(this)}>＜</span>
+        <Link className={style.arrow} to={`${prevUrl}`} style={this.state.currentPage - 1 <= 0 ? {pointerEvents: 'none'} : null}>＜</Link>
         {this.state.currentPage} / {this.state.pageSize}
-        <span className={style.arrow} onClick={this.handleNextPage.bind(this)}>＞</span>
+        <Link className={style.arrow} to={`${nextUrl}`} style={this.state.currentPage + 1 > this.state.pageSize ? {pointerEvents: 'none'} : null}>＞</Link>
       </div>
     );
   }
