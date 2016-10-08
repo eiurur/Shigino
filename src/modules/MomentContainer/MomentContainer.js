@@ -46,6 +46,8 @@ export default class MomentContainer extends React.Component {
     // setStateすると二度レンダリングが走るのでこれでよい
     this.state.moment = moment;
     ReactDOM.render(<Moment moment={this.state.moment}></Moment>,  ReactDOM.findDOMNode(this.refs.widget));
+
+    window.scroll(0, 0);
   }
 
   onSelectMoment(moment) {

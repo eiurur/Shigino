@@ -50,19 +50,19 @@ module.exports = class TweetProvider extends BaseProvider {
     return new Promise(function(resolve, reject) {
       console.log(params);
 
-      const condition = [Object.assign(params.query,
-        {
-          description: new RegExp(params.word, 'i'),
-          title: new RegExp(params.word, 'i')
-        }
-      )];
+      let condition = (Object.keys(params.query).length) ? [params.query] : [];
+      if(params.word){
+        condition.push({description: new RegExp(params.word, 'i')});
+        condition.push({title: new RegExp(params.word, 'i')});
+      }
+      if(condition.length === 0) condition = [{}];
+
       console.log(condition);
 
       Promise.all([
-        Tweet.find().or(params.query).or({description: new RegExp(params.word, 'i')}).or({title: new RegExp(params.word, 'i')}).limit(params.limit).skip(params.skip).sort(params.sort),
-        Tweet.find().or(condition).count().exec()
+        Tweet.find({'$or': condition}).limit(params.limit).skip(params.skip).sort(params.sort),
+        Tweet.find({'$or': condition}).count().exec()
       ]).then( results => {
-        console.log(results);
         return resolve({moments: results[0], count: results[1]});
       });
     });

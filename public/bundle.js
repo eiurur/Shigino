@@ -29390,6 +29390,8 @@
 	      // setStateすると二度レンダリングが走るのでこれでよい
 	      this.state.moment = moment;
 	      _reactDom2.default.render(_react2.default.createElement(_Moment2.default, { moment: this.state.moment }), _reactDom2.default.findDOMNode(this.refs.widget));
+
+	      window.scroll(0, 0);
 	    }
 	  }, {
 	    key: "onSelectMoment",
