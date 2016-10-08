@@ -83,7 +83,8 @@
 	    { path: '/', component: _App2.default },
 	    _react2.default.createElement(_reactRouter.Route, { path: '/main', component: _MainContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/lists', component: _MomentContainer2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/user/@:username', component: _MainContainer2.default })
+	    _react2.default.createElement(_reactRouter.Route, { path: '/user/@:username', component: _MainContainer2.default }),
+	    _react2.default.createElement(_reactRouter.Redirect, { from: '*', to: '/main' })
 	  )
 	), document.getElementById('app'));
 

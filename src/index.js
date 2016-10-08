@@ -15,6 +15,7 @@ render((
       <Route path="/main" component={MainContainer}/>
       <Route path="/lists" component={MomentContainer}/>
       <Route path="/user/@:username" component={MainContainer}/>
+      <Redirect from="*" to="/main" />
     </Route>
   </Router>
 ), document.getElementById('app'));
