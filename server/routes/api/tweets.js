@@ -18,6 +18,48 @@ module.exports = (app) => {
     .catch( err => res.status(400).send(err));
   });
 
+  app.get('/api/tweets/moments/latest', function(req, res) {
+    const opts = {
+      query: {},
+      word: req.query.word || '',
+      limit: req.query.limit - 0,
+      skip: req.query.skip - 0,
+      sort: {created_at: -1},
+    };
+
+    if(req.query.username) opts.query.username = req.query.username;
+
+    const TweetProvider = ModelProviderFactory.create('Tweet');
+    TweetProvider.find(opts)
+    .then(moments => {
+      res.send(moments);
+    })
+    .catch( err => res.status(400).send(err));
+  });
+
+  app.get('/api/tweets/moments/ranking/:range', function(req, res) {
+
+    // req.params.range
+
+    const opts = {
+      query: {},
+      word: req.query.word || '',
+      limit: req.query.limit - 0,
+      skip: req.query.skip - 0,
+      sort: {count: -1},
+    };
+
+    if(req.query.username) opts.query.username = req.query.username;
+
+    const TweetProvider = ModelProviderFactory.create('Tweet');
+    TweetProvider.find(opts)
+    .then(moments => {
+      res.send(moments);
+    })
+    .catch( err => res.status(400).send(err));
+  });
+
+
   app.get('/api/tweets/moments', function(req, res) {
     const opts = {
       query: {},
@@ -36,5 +78,7 @@ module.exports = (app) => {
     })
     .catch( err => res.status(400).send(err));
   });
+
+
 
 };

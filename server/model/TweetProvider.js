@@ -27,6 +27,10 @@ let TweetSchema = new Schema({
     type: Date,
     default: Date.now()
   },
+  tweeted_at: {
+    type: Date,
+    default: Date.now()
+  },
   updated_at: {
     type: Date,
     default: Date.now()
@@ -34,7 +38,7 @@ let TweetSchema = new Schema({
 });
 
 
-TweetSchema.index({moment_id: -1, created_at: -1, updated_at: -1});
+TweetSchema.index({moment_id: -1, created_at: -1, updated_at: -1, tweeted_at: -1});
 
 mongoose.model('Tweet', TweetSchema);
 

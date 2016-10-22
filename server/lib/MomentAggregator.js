@@ -2,9 +2,10 @@
 require('dotenv').config();
 const twit                 = require('twit');
 const path                 = require('path');
+const moment               = require('moment');
 const client               = require('cheerio-httpcli');
 const ModelProviderFactory = require(path.resolve('server', 'model', 'ModelProviderFactory'));
-const MorphologicalAnalyzer = require(path.resolve('server', 'lib', 'MorphologicalAnalyzer'));
+const TimeConverter = require(path.resolve('server', 'lib', 'TimeConverter'));
 
 
 module.exports = class MomentAggregator {
@@ -47,6 +48,7 @@ module.exports = class MomentAggregator {
           title: result.$('.MomentCapsuleCover-title').text(),
           description: result.$('.MomentCapsuleCover-details .MomentCapsuleCover-description').text(),
           thumbnail: result.$('.MomentCapsuleCover-media .MomentMediaItem-entity--image').attr('src'),
+          tweeted_at: result.$('.MomentCapsuleCover-details .MomentCapsuleSubtitle-context').text().trim(),
         };
 
         return resolve(info);
@@ -77,6 +79,7 @@ module.exports = class MomentAggregator {
           title: momentInfo.title,
           description: momentInfo.description,
           thumbnail: momentInfo.thumbnail,
+          tweeted_at: TimeConverter.toNow(momentInfo.tweeted_at),
         };
         // console.log(MorphologicalAnalyzer.tokenize(momentInfo.description).then( result => console.log(result) ).catch(err => console.log(err) ));
         this.TweetProvider.upsert(opts);
