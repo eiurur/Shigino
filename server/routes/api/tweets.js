@@ -25,7 +25,7 @@ module.exports = (app) => {
       word: req.query.word || '',
       limit: req.query.limit - 0,
       skip: req.query.skip - 0,
-      sort: {created_at: -1},
+      sort: {tweeted_at: -1},
     };
 
     if(req.query.username) opts.query.username = req.query.username;
@@ -40,8 +40,9 @@ module.exports = (app) => {
 
   app.get('/api/tweets/moments/ranking/:term', function(req, res) {
 
-    if(['day', 'week', 'month', 'year'].includes(req.params.term)) {
+    if(!['day', 'week', 'month', 'year'].includes(req.params.term)) {
       res.status(400).send('期間はday, week, month, yearのみ指定できます');
+      return;
     }
 
     const opts = {
@@ -56,7 +57,7 @@ module.exports = (app) => {
     const TweetProvider = ModelProviderFactory.create('Tweet');
     TweetProvider.findByTerm(opts)
     .then(moments => {
-      console.log(moments);
+      console.log('findByTerm ==> ', moments);
       res.send(moments);
     })
     .catch( err => res.status(400).send(err));
@@ -81,7 +82,4 @@ module.exports = (app) => {
     })
     .catch( err => res.status(400).send(err));
   });
-
-
-
 };
