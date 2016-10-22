@@ -148,13 +148,13 @@ module.exports = class TweetProvider extends BaseProvider {
 
       console.log('condition = ', condition);
 
-      Tweet.find({"$and": condition})
-      .limit(params.limit)
-      .skip(params.skip)
-      .sort(params.sort)
-      .exec(function(err, tweets) {
-        if (err) { return reject(err); }
-        return resolve(tweets);
+
+
+      Promise.all([
+        Tweet.find({'$and': condition}).limit(params.limit).skip(params.skip).sort(params.sort),
+        Tweet.find({'$and': condition}).count().exec()
+      ]).then( results => {
+        return resolve({moments: results[0], count: results[1]});
       });
     });
   }
