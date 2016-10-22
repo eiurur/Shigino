@@ -44,6 +44,7 @@
     "kuromoji": "^0.1.1",
     "marked": "^0.3.5",
     "method-override": "^2.3.6",
+    "moment": "^2.15.1",
     "mongoose": "^4.5.4",
     "normalize.css": "^4.2.0",
     "oror": "0.0.1",
