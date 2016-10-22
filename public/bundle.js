@@ -62,6 +62,10 @@
 
 	var _MainContainer2 = _interopRequireDefault(_MainContainer);
 
+	var _RankingContainer = __webpack_require__(285);
+
+	var _RankingContainer2 = _interopRequireDefault(_RankingContainer);
+
 	var _MomentContainer = __webpack_require__(267);
 
 	var _MomentContainer2 = _interopRequireDefault(_MomentContainer);
@@ -82,6 +86,7 @@
 	    _reactRouter.Route,
 	    { path: '/', component: _App2.default },
 	    _react2.default.createElement(_reactRouter.Route, { path: '/main', component: _MainContainer2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/ranking/:term', component: _RankingContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/lists', component: _MomentContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/user/@:username', component: _MainContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Redirect, { from: '*', to: '/main' })
@@ -27173,7 +27178,34 @@
 	              _react2.default.createElement(
 	                _reactRouter.Link,
 	                { to: '/main', className: _App2.default.link, activeClassName: 'active' },
-	                'main'
+	                'Main'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              { className: _App2.default.item },
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/ranking/day', className: _App2.default.link, activeClassName: 'active' },
+	                'Day'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              { className: _App2.default.item },
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/ranking/week', className: _App2.default.link, activeClassName: 'active' },
+	                'Week'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              { className: _App2.default.item },
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/ranking/month', className: _App2.default.link, activeClassName: 'active' },
+	                'Month'
 	              )
 	            )
 	          )
@@ -30036,6 +30068,162 @@
 
 	// module
 	exports.push([module.id, "@charset \"UTF-8\";\nbody {\n  color: #000;\n  font-family: YuGothic, 'Yu Gothic', '\\6E38\\30B4\\30B7\\30C3\\30AF\\4F53', '\\6E38\\30B4\\30B7\\30C3\\30AF', '\\30D2\\30E9\\30AE\\30CE\\89D2\\30B4   Pro W3', 'Hiragino Kaku Gothic Pro', '\\30E1\\30A4\\30EA\\30AA', 'Meiryo', 'MSP\\30B4\\30B7\\30C3\\30AF', 'Osaka', 'MS PGothic', 'Arial', 'Helvetica', 'Verdana', 'sans-serif';\n  font-size: 1rem;\n  font-weight: 400;\n  margin-top: 0;\n  line-height: 1.4;\n  margin: 1rem;\n  background: #282c34; }\n\nheader {\n  width: 100%; }\n\nnav {\n  margin: 2rem 0; }\n\nnav ul {\n  display: flex;\n  width: 100%; }\n\nnav li:first-child {\n  margin-right: auto; }\n\na {\n  text-decoration: none;\n  cursor: pointer;\n  color: #7a9199; }\n\nh1 {\n  font-size: 2rem;\n  margin: 0.4rem 0; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _axios = __webpack_require__(241);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _urlParamsHelper = __webpack_require__(263);
+
+	var _MomentContainer = __webpack_require__(267);
+
+	var _MomentContainer2 = _interopRequireDefault(_MomentContainer);
+
+	var _RankingContainer = __webpack_require__(286);
+
+	var _RankingContainer2 = _interopRequireDefault(_RankingContainer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RankingContainer = function (_React$Component) {
+	  _inherits(RankingContainer, _React$Component);
+
+	  function RankingContainer(props) {
+	    _classCallCheck(this, RankingContainer);
+
+	    var _this = _possibleConstructorReturn(this, (RankingContainer.__proto__ || Object.getPrototypeOf(RankingContainer)).call(this, props));
+
+	    _this.state = {
+	      moments: [],
+	      count: 0,
+	      err: null
+	    };
+	    _this.url = '/api/tweets/moments/ranking';
+	    return _this;
+	  }
+
+	  _createClass(RankingContainer, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      console.log('RankingContainer componentDidMount', this.props);
+	      var params = Object.assign(this.props.params, (0, _urlParamsHelper.getParams)());
+	      this.handleSubmit(params);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      console.log('RankingContainer componentWillReceiveProps', nextProps.params);
+	      console.log('RankingContainer componentWillReceiveProps getParams', (0, _urlParamsHelper.getParams)());
+	      var params = Object.assign(nextProps.params, (0, _urlParamsHelper.getParams)());
+	      this.handleSubmit(params);
+	    }
+	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit() {
+	      var _this2 = this;
+
+	      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+	      console.log('RankingContainer handleSubmit', params);
+	      // this.context.history.push(replaceParam('username', params.username));
+
+	      (0, _axios2.default)({
+	        url: this.url + '/' + params.term,
+	        method: 'get',
+	        responseType: 'json',
+	        params: {
+	          skip: (params.currentPage - 1) * 30 || 0,
+	          limit: 30
+	        }
+	      }).then(function (res) {
+	        console.log('RankingContainer fetch ', res.data);
+	        if (res.status !== 200) throw new Error(res.data);
+	        _this2.setState({
+	          moments: res.data.moments,
+	          count: res.data.count
+	        });
+	      }).catch(function (err) {
+	        _this2.setState({ err: err });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      console.log('RankingContainer render ');
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _RankingContainer2.default.container },
+	        _react2.default.createElement(_MomentContainer2.default, { moments: this.state.moments, count: this.state.count })
+	      );
+	    }
+	  }]);
+
+	  return RankingContainer;
+	}(_react2.default.Component);
+
+	exports.default = RankingContainer;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(287);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(239)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./RankingContainer.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./RankingContainer.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(238)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
 
 	// exports
 

@@ -57,7 +57,6 @@ module.exports = (app) => {
     const TweetProvider = ModelProviderFactory.create('Tweet');
     TweetProvider.findByTerm(opts)
     .then(moments => {
-      console.log('findByTerm ==> ', moments);
       res.send(moments);
     })
     .catch( err => res.status(400).send(err));
