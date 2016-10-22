@@ -1,4 +1,5 @@
 const path                 = require('path');
+const moment               = require('moment');
 const ModelProviderFactory = require(path.resolve('server', 'model', 'ModelProviderFactory'));
 
 module.exports = (app) => {
@@ -37,23 +38,25 @@ module.exports = (app) => {
     .catch( err => res.status(400).send(err));
   });
 
-  app.get('/api/tweets/moments/ranking/:range', function(req, res) {
+  app.get('/api/tweets/moments/ranking/:term', function(req, res) {
 
-    // req.params.range
+    if(['day', 'week', 'month', 'year'].includes(req.params.term)) {
+      res.status(400).send('期間はday, week, month, yearのみ指定できます');
+    }
 
     const opts = {
       query: {},
-      word: req.query.word || '',
+      date: moment().format('YYYY-MM-DD'),
+      term: req.params.term || 'day',
       limit: req.query.limit - 0,
       skip: req.query.skip - 0,
       sort: {count: -1},
     };
 
-    if(req.query.username) opts.query.username = req.query.username;
-
     const TweetProvider = ModelProviderFactory.create('Tweet');
-    TweetProvider.find(opts)
+    TweetProvider.findByTerm(opts)
     .then(moments => {
+      console.log(moments);
       res.send(moments);
     })
     .catch( err => res.status(400).send(err));

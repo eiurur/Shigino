@@ -1,4 +1,5 @@
 const mongoose     = require('mongoose');
+const moment       = require('moment');
 const BaseProvider = require('./BaseProvider');
 let { Schema }     = mongoose;
 let { ObjectId }   = Schema;
@@ -112,6 +113,52 @@ module.exports = class TweetProvider extends BaseProvider {
       });
     });
   }
+
+  findByTerm(params) {
+    return new Promise( (resolve, reject) => {
+
+      switch (params.term) {
+        case 'day':
+          var begin = moment(params.date).format();
+          var end = moment(params.date).add(1, 'days').format();
+          break;
+        case 'week':
+          begin = moment(params.date).format();
+          end = moment(params.date).add(1, 'weeks').format();
+          break;
+        case 'month':
+          begin = moment(params.date).date(1).format();
+          end = moment(params.date).add(1, 'months').date(1).format();
+          break;
+        case 'year':
+          begin = moment(params.date).date(1).format();
+          end = moment(params.date).add(1, 'years').date(1).format();
+          break;
+        default:
+          begin = moment().format();
+          end = moment().add(1, 'days').format();
+      }
+
+      let condition = [{
+        tweeted_at: {
+          $gte: begin,
+          $lt: end
+        }
+      }];
+
+      console.log('condition = ', condition);
+
+      Tweet.find({"$and": condition})
+      .limit(params.limit)
+      .skip(params.skip)
+      .sort(params.sort)
+      .exec(function(err, tweets) {
+        if (err) { return reject(err); }
+        return resolve(tweets);
+      });
+    });
+  }
+
 
   upsert(params) {
     return new Promise((resolve, reject) => {
