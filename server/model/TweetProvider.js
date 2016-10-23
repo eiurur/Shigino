@@ -119,12 +119,12 @@ module.exports = class TweetProvider extends BaseProvider {
 
       switch (params.term) {
         case 'day':
-          var begin = moment(params.date).format();
-          var end = moment(params.date).add(1, 'days').format();
+          var begin = moment(params.date).add(-1, 'days').format();
+          var end = moment(params.date).format();
           break;
         case 'week':
-          begin = moment(params.date).format();
-          end = moment(params.date).add(1, 'weeks').format();
+          begin = moment(params.date).add(-1, 'weeks').format();
+          end = moment(params.date).format();
           break;
         case 'month':
           begin = moment(params.date).date(1).format();
