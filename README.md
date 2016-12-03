@@ -3,7 +3,8 @@ Chika
 
 【WIP】 Twitter Moment Aggregator
 
-![demo](https://github.com/eiurur/Chika/raw/master/demo.png)
+![demo](https://github.com/eiurur/Chika/raw/master/media/demo_s.jpg
+)
 
 # Usage
 
