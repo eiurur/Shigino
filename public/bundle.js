@@ -29350,11 +29350,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _Moment = __webpack_require__(268);
-
-	var _Moment2 = _interopRequireDefault(_Moment);
-
-	var _MomentItem = __webpack_require__(288);
+	var _MomentItem = __webpack_require__(271);
 
 	var _MomentItem2 = _interopRequireDefault(_MomentItem);
 
@@ -29379,7 +29375,6 @@
 	    var _this = _possibleConstructorReturn(this, (MomentContainer.__proto__ || Object.getPrototypeOf(MomentContainer)).call(this, props));
 
 	    _this.state = {
-	      moment: {},
 	      moments: [],
 	      count: 0,
 	      err: ''
@@ -29389,47 +29384,17 @@
 	  }
 
 	  _createClass(MomentContainer, [{
-	    key: "clearState",
-	    value: function clearState() {
-	      this.state = {
-	        moment: {},
-	        moments: [],
-	        count: 0,
-	        err: ''
-	      };
-	    }
-	  }, {
 	    key: "componentWillReceiveProps",
 	    value: function componentWillReceiveProps(nextProps) {
 	      console.log("MomentContainer componentWillReceiveProps", nextProps);
 	      console.log("MomentContainer componentWillReceiveProps", this.state);
 	      if (nextProps.moments !== undefined) {
 	        this.setState({
-	          moment: nextProps.moments[0],
 	          moments: nextProps.moments,
 	          count: nextProps.count
 	        });
-	        this.rerenderMoment(nextProps.moments[0]);
 	        return;
 	      }
-	    }
-	  }, {
-	    key: "rerenderMoment",
-	    value: function rerenderMoment(moment) {
-	      // HACK: 一度DOMを削除して再生成する方法でしかTwitterWidgetを更新できなかった。
-	      _reactDom2.default.unmountComponentAtNode(_reactDom2.default.findDOMNode(this.refs.widget));
-
-	      // setStateすると二度レンダリングが走るのでこれでよい
-	      this.state.moment = moment;
-	      _reactDom2.default.render(_react2.default.createElement(_Moment2.default, { moment: this.state.moment }), _reactDom2.default.findDOMNode(this.refs.widget));
-
-	      window.scroll(0, 0);
-	    }
-	  }, {
-	    key: "onSelectMoment",
-	    value: function onSelectMoment(moment) {
-	      console.log("MomentContainer changeMoment", moment);
-	      this.rerenderMoment(moment);
 	    }
 	  }, {
 	    key: "render",
@@ -29440,8 +29405,7 @@
 	        { className: _MomentContainer2.default.container },
 	        _react2.default.createElement(_MomentItem2.default, {
 	          moments: this.state.moments,
-	          count: this.state.count,
-	          selectedMoment: this.onSelectMoment.bind(this) })
+	          count: this.state.count })
 	      );
 	    }
 	  }]);
@@ -29599,7 +29563,160 @@
 	};
 
 /***/ },
-/* 271 */,
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(172);
+
+	var _Moment = __webpack_require__(268);
+
+	var _Moment2 = _interopRequireDefault(_Moment);
+
+	var _Pagination = __webpack_require__(272);
+
+	var _Pagination2 = _interopRequireDefault(_Pagination);
+
+	var _MomentItem = __webpack_require__(275);
+
+	var _MomentItem2 = _interopRequireDefault(_MomentItem);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MomentItem = function (_React$Component) {
+	  _inherits(MomentItem, _React$Component);
+
+	  function MomentItem(props) {
+	    _classCallCheck(this, MomentItem);
+
+	    var _this = _possibleConstructorReturn(this, (MomentItem.__proto__ || Object.getPrototypeOf(MomentItem)).call(this, props));
+
+	    _this.state = {
+	      moments: _this.props.moments,
+	      count: _this.props.count
+	    };
+	    return _this;
+	  }
+
+	  _createClass(MomentItem, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      console.log('MomentItem componentWillReceiveProps');
+	      console.log(this.props.moments, nextProps.moments);
+	      this.state = {
+	        moments: nextProps.moments,
+	        count: nextProps.count
+	      };
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(moment) {
+	      console.log('MomentItem handleChange ', moment);
+	      this.props.selectedMoment(moment);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var momentNodes = void 0;
+	      if (this.state.moments.length === 0) {
+	        momentNodes = _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            '\u7A7A'
+	          )
+	        );
+	      } else {
+	        momentNodes = this.state.moments.map(function (moment, i) {
+	          return _react2.default.createElement(
+	            'div',
+	            { className: _MomentItem2.default.item },
+	            _react2.default.createElement('div', { className: _MomentItem2.default.overlay }),
+	            _react2.default.createElement(
+	              'section',
+	              { className: _MomentItem2.default.attribution },
+	              _react2.default.createElement(
+	                'div',
+	                { className: _MomentItem2.default.title },
+	                _react2.default.createElement(
+	                  'div',
+	                  null,
+	                  _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { to: '/moment/@' + moment._id },
+	                    moment.title
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: _MomentItem2.default.description },
+	                _react2.default.createElement(
+	                  'div',
+	                  null,
+	                  moment.description
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: _MomentItem2.default.postedBy },
+	                _react2.default.createElement(
+	                  _reactRouter.Link,
+	                  { to: '/user/@' + moment.username },
+	                  _react2.default.createElement('img', { src: moment.avater, className: _MomentItem2.default.avater }),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: _MomentItem2.default.username },
+	                    '@',
+	                    moment.username
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement('img', { src: moment.thumbnail, className: _MomentItem2.default.catch })
+	          );
+	        });
+	      }
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _MomentItem2.default.container },
+	        _react2.default.createElement(_Pagination2.default, { count: this.state.count }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: _MomentItem2.default.nodes },
+	          momentNodes
+	        ),
+	        _react2.default.createElement(_Pagination2.default, { count: this.state.count })
+	      );
+	    }
+	  }]);
+
+	  return MomentItem;
+	}(_react2.default.Component);
+
+	exports.default = MomentItem;
+
+/***/ },
 /* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -29729,8 +29846,59 @@
 	};
 
 /***/ },
-/* 275 */,
-/* 276 */,
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(276);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(239)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./MomentItem.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./MomentItem.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(238)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".src-modules-MomentItem-MomentItem---container---2QE1t {\n  width: 100%; }\n\n.src-modules-MomentItem-MomentItem---nodes---3FO-a {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center; }\n\n.src-modules-MomentItem-MomentItem---item---1IsZ6 {\n  width: 30%;\n  height: 480px;\n  position: relative;\n  margin: 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  color: #fff;\n  text-shadow: 0 1px 1px #000; }\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 a {\n    color: #fff; }\n\n.src-modules-MomentItem-MomentItem---overlay---26cRT {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: rgba(0, 0, 0, 0.6);\n  z-index: 300; }\n\n.src-modules-MomentItem-MomentItem---catch---fxp_4 {\n  height: 100%;\n  display: inline-block;\n  cursor: pointer;\n  object-fit: cover;\n  width: 100%;\n  height: 480px;\n  z-index: 10;\n  background-color: #1c1d22; }\n\n.src-modules-MomentItem-MomentItem---attribution---f66D7 {\n  width: 90%;\n  z-index: 400;\n  text-align: center;\n  position: absolute; }\n\n.src-modules-MomentItem-MomentItem---rank---r_x21 {\n  font-size: 6rem;\n  line-height: 1.6; }\n\n.src-modules-MomentItem-MomentItem---title---1MPzV {\n  margin-top: 1rem;\n  font-size: 2.5rem; }\n\n.src-modules-MomentItem-MomentItem---description---1r-UP {\n  margin-top: 1rem;\n  font-size: 0.8rem; }\n\n.src-modules-MomentItem-MomentItem---postedBy---1xCFg {\n  margin-top: 1.5rem;\n  font-size: 1rem; }\n\n.src-modules-MomentItem-MomentItem---username---UBJCI {\n  margin-top: 0.5rem; }\n\n.src-modules-MomentItem-MomentItem---avater---39E4B {\n  border-radius: 100%;\n  width: 2rem;\n  height: 2rem; }\n", ""]);
+
+	// exports
+	exports.locals = {
+		"container": "src-modules-MomentItem-MomentItem---container---2QE1t",
+		"nodes": "src-modules-MomentItem-MomentItem---nodes---3FO-a",
+		"item": "src-modules-MomentItem-MomentItem---item---1IsZ6",
+		"overlay": "src-modules-MomentItem-MomentItem---overlay---26cRT",
+		"catch": "src-modules-MomentItem-MomentItem---catch---fxp_4",
+		"attribution": "src-modules-MomentItem-MomentItem---attribution---f66D7",
+		"rank": "src-modules-MomentItem-MomentItem---rank---r_x21",
+		"title": "src-modules-MomentItem-MomentItem---title---1MPzV",
+		"description": "src-modules-MomentItem-MomentItem---description---1r-UP",
+		"postedBy": "src-modules-MomentItem-MomentItem---postedBy---1xCFg",
+		"username": "src-modules-MomentItem-MomentItem---username---UBJCI",
+		"avater": "src-modules-MomentItem-MomentItem---avater---39E4B"
+	};
+
+/***/ },
 /* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -30047,213 +30215,6 @@
 
 	// exports
 
-
-/***/ },
-/* 288 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(172);
-
-	var _Moment = __webpack_require__(268);
-
-	var _Moment2 = _interopRequireDefault(_Moment);
-
-	var _Pagination = __webpack_require__(272);
-
-	var _Pagination2 = _interopRequireDefault(_Pagination);
-
-	var _MomentItem = __webpack_require__(289);
-
-	var _MomentItem2 = _interopRequireDefault(_MomentItem);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var MomentItem = function (_React$Component) {
-	  _inherits(MomentItem, _React$Component);
-
-	  function MomentItem(props) {
-	    _classCallCheck(this, MomentItem);
-
-	    var _this = _possibleConstructorReturn(this, (MomentItem.__proto__ || Object.getPrototypeOf(MomentItem)).call(this, props));
-
-	    _this.state = {
-	      moments: _this.props.moments,
-	      count: _this.props.count
-	    };
-	    return _this;
-	  }
-
-	  _createClass(MomentItem, [{
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      console.log('MomentItem componentWillReceiveProps');
-	      console.log(this.props.moments, nextProps.moments);
-	      this.state = {
-	        moments: nextProps.moments,
-	        count: nextProps.count
-	      };
-	    }
-	  }, {
-	    key: 'handleChange',
-	    value: function handleChange(moment) {
-	      console.log('MomentItem handleChange ', moment);
-	      this.props.selectedMoment(moment);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var momentNodes = void 0;
-	      if (this.state.moments.length === 0) {
-	        momentNodes = _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'h2',
-	            null,
-	            '\u7A7A'
-	          )
-	        );
-	      } else {
-	        momentNodes = this.state.moments.map(function (moment, i) {
-	          return _react2.default.createElement(
-	            'div',
-	            { className: _MomentItem2.default.item },
-	            _react2.default.createElement('div', { className: _MomentItem2.default.overlay }),
-	            _react2.default.createElement(
-	              'section',
-	              { className: _MomentItem2.default.attribution },
-	              _react2.default.createElement(
-	                'div',
-	                { className: _MomentItem2.default.title },
-	                _react2.default.createElement(
-	                  'div',
-	                  null,
-	                  _react2.default.createElement(
-	                    _reactRouter.Link,
-	                    { to: '/moment/@' + moment._id },
-	                    moment.title
-	                  )
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: _MomentItem2.default.description },
-	                _react2.default.createElement(
-	                  'div',
-	                  null,
-	                  moment.description
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: _MomentItem2.default.postedBy },
-	                _react2.default.createElement(
-	                  _reactRouter.Link,
-	                  { to: '/user/@' + moment.username },
-	                  _react2.default.createElement('img', { src: moment.avater, className: _MomentItem2.default.avater }),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: _MomentItem2.default.username },
-	                    '@',
-	                    moment.username
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement('img', { src: moment.thumbnail, className: _MomentItem2.default.catch })
-	          );
-	        });
-	      }
-
-	      return _react2.default.createElement(
-	        'div',
-	        { className: _MomentItem2.default.container },
-	        _react2.default.createElement(_Pagination2.default, { count: this.state.count }),
-	        _react2.default.createElement(
-	          'div',
-	          { className: _MomentItem2.default.nodes },
-	          momentNodes
-	        ),
-	        _react2.default.createElement(_Pagination2.default, { count: this.state.count })
-	      );
-	    }
-	  }]);
-
-	  return MomentItem;
-	}(_react2.default.Component);
-
-	exports.default = MomentItem;
-
-/***/ },
-/* 289 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(290);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(239)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./MomentItem.scss", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./MomentItem.scss");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 290 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(238)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".src-modules-MomentItem-MomentItem---container---2QE1t {\n  width: 100%; }\n\n.src-modules-MomentItem-MomentItem---nodes---3FO-a {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center; }\n\n.src-modules-MomentItem-MomentItem---item---1IsZ6 {\n  width: 30%;\n  height: 480px;\n  position: relative;\n  margin: 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  color: #fff;\n  text-shadow: 0 1px 1px #000; }\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 a {\n    color: #fff; }\n\n.src-modules-MomentItem-MomentItem---overlay---26cRT {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: rgba(0, 0, 0, 0.6);\n  z-index: 300; }\n\n.src-modules-MomentItem-MomentItem---catch---fxp_4 {\n  height: 100%;\n  display: inline-block;\n  cursor: pointer;\n  object-fit: cover;\n  width: 100%;\n  height: 480px;\n  z-index: 10;\n  background-color: #1c1d22; }\n\n.src-modules-MomentItem-MomentItem---attribution---f66D7 {\n  width: 90%;\n  z-index: 400;\n  text-align: center;\n  position: absolute; }\n\n.src-modules-MomentItem-MomentItem---rank---r_x21 {\n  font-size: 6rem;\n  line-height: 1.6; }\n\n.src-modules-MomentItem-MomentItem---title---1MPzV {\n  margin-top: 1rem;\n  font-size: 2.5rem; }\n\n.src-modules-MomentItem-MomentItem---description---1r-UP {\n  margin-top: 1rem;\n  font-size: 0.8rem; }\n\n.src-modules-MomentItem-MomentItem---postedBy---1xCFg {\n  margin-top: 1.5rem;\n  font-size: 1rem; }\n\n.src-modules-MomentItem-MomentItem---username---UBJCI {\n  margin-top: 0.5rem; }\n\n.src-modules-MomentItem-MomentItem---avater---39E4B {\n  border-radius: 100%;\n  width: 2rem;\n  height: 2rem; }\n", ""]);
-
-	// exports
-	exports.locals = {
-		"container": "src-modules-MomentItem-MomentItem---container---2QE1t",
-		"nodes": "src-modules-MomentItem-MomentItem---nodes---3FO-a",
-		"item": "src-modules-MomentItem-MomentItem---item---1IsZ6",
-		"overlay": "src-modules-MomentItem-MomentItem---overlay---26cRT",
-		"catch": "src-modules-MomentItem-MomentItem---catch---fxp_4",
-		"attribution": "src-modules-MomentItem-MomentItem---attribution---f66D7",
-		"rank": "src-modules-MomentItem-MomentItem---rank---r_x21",
-		"title": "src-modules-MomentItem-MomentItem---title---1MPzV",
-		"description": "src-modules-MomentItem-MomentItem---description---1r-UP",
-		"postedBy": "src-modules-MomentItem-MomentItem---postedBy---1xCFg",
-		"username": "src-modules-MomentItem-MomentItem---username---UBJCI",
-		"avater": "src-modules-MomentItem-MomentItem---avater---39E4B"
-	};
 
 /***/ }
 /******/ ]);
