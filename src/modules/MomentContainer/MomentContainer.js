@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Moment from "../Moment/Moment";
-import MomentList from "../MomentList/MomentList";
+import MomentItem from "../MomentItem/MomentItem";
 import style from "./MomentContainer.scss";
 
 export default class MomentContainer extends React.Component {
@@ -59,12 +59,11 @@ export default class MomentContainer extends React.Component {
     console.log("MomentContainer render ", this.state.moments);
     return (
       <div className={style.container}>
-        <MomentList
+        <MomentItem
           moments={this.state.moments}
           count={this.state.count}
           selectedMoment={this.onSelectMoment.bind(this)}>
-        </MomentList>
-        <Moment ref="widget" moment={this.state.moment}></Moment>
+        </MomentItem>
       </div>
     );
   }

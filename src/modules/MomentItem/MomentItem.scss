@@ -1,0 +1,89 @@
+$item-height: 480px;
+
+.container {
+  width: 100%;
+}
+.nodes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.item {
+  width: 30%;
+  height: $item-height;
+  position: relative;
+  margin: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-shadow: 0 1px 1px #000;
+
+  a {
+    color: #fff;
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,.6);
+  // background: rgba(0, 172, 193, 0.6);
+  z-index: 300;
+}
+
+
+.catch {
+  height: 100%;
+  display: inline-block;
+  cursor: pointer;
+  object-fit: cover;
+  width: 100%;
+  height: $item-height;
+  z-index: 10;
+  background-color: #1c1d22;
+}
+
+.attribution {
+  width: 90%;
+  // margin-top: 64px;
+  z-index: 400;
+  text-align: center;
+  position: absolute;
+}
+
+.rank {
+  font-size: 6rem;
+  line-height: 1.6;
+}
+
+.title {
+  margin-top: 1rem;
+  font-size: 2.5rem;
+}
+
+.description {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+}
+
+.postedBy {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+}
+
+.username {
+  margin-top: 0.5rem;
+}
+
+.avater {
+  border-radius: 100%;
+  width: 2rem;
+  height: 2rem;
+}
