@@ -1,9 +1,11 @@
 .container {
-  flex-grow: 1;
-  margin: 2rem 0 0 2rem;
+  // flex-grow: 1;
 }
 
 .moment {
   // margin-right: 1rem;
   // width: 50%;
+  margin: 2rem 0 0 2rem;
+  margin: 0 auto;
+  max-width: 1280px;
 }

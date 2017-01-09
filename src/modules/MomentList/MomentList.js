@@ -7,32 +7,15 @@ import style from './MomentList.scss';
 export default class MomentList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      moments: this.props.moments,
-      count: this.props.count,
-    };
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log('MomentList componentWillReceiveProps');
-    console.log(this.props.moments, nextProps.moments);
-    this.state = {
-      moments: nextProps.moments,
-      count: nextProps.count,
-    };
-  }
-
-  handleChange(moment) {
-    console.log('MomentList handleChange ', moment);
-    this.props.selectedMoment(moment);
-  }
 
   render() {
     let momentNodes;
-    if(this.state.moments.length === 0) {
+    if(this.props.moments.length === 0) {
       momentNodes = <div><h2>空</h2></div>;
     } else {
-      momentNodes = this.state.moments.map((moment, i) => {
+      momentNodes = this.props.moments.map((moment, i) => {
         return (
           <div className={style.media} >
             <img className={style.figure} src={moment.thumbnail} onClick={this.handleChange.bind(this, moment)}/>
@@ -50,11 +33,11 @@ export default class MomentList extends React.Component {
 
     return (
       <div className={style.container}>
-        <Pagination count={this.state.count}></Pagination>
+        <Pagination count={this.props.count}></Pagination>
         <div className={style.nodes}>
           {momentNodes}
         </div>
-        <Pagination count={this.state.count}></Pagination>
+        <Pagination count={this.props.count}></Pagination>
       </div>
     );
   }

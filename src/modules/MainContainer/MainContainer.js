@@ -15,7 +15,7 @@ export default class MainContainer extends React.Component {
       count: 0,
       err: null
     };
-    this.url = '/api/tweets/moments';
+    this.url = '/api/moments';
   }
 
   componentDidMount() {
@@ -33,17 +33,18 @@ export default class MainContainer extends React.Component {
 
   handleSubmit(params = {}) {
     console.log('MainContainer handleSubmit', params);
+    console.log('MainContainer !params.username', !params.username);
       // this.context.history.push(replaceParam('username', params.username));
-
+    const url = (params.username) ? `${this.url}/@${params.username}` : this.url;
+    console.log('url', url);
     axios({
-      url: this.url,
+      url: url,
       method: 'get',
       responseType: 'json',
       params: {
-        username: params.username,
         word: params.word,
         skip: (params.currentPage - 1) * 30 || 0,
-        limit: 30,
+        limit: 30
       }
     })
     .then( res => {

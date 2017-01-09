@@ -4,6 +4,7 @@ import { IndexRedirect, Redirect, Link, Router, Route, browserHistory } from 're
 import App from './modules/App';
 import MainContainer from './modules/MainContainer/MainContainer';
 import RankingContainer from './modules/RankingContainer/RankingContainer';
+import Moment from './modules/Moment/Moment';
 import MomentContainer from './modules/MomentContainer/MomentContainer';
 
 import './reset.scss';
@@ -16,6 +17,7 @@ render((
       <Route path="/main" component={MainContainer}/>
       <Route path="/ranking/:term" component={RankingContainer}/>
       <Route path="/lists" component={MomentContainer}/>
+      <Route path="/moment/:moment_id" component={Moment}/>
       <Route path="/user/@:username" component={MainContainer}/>
       <Redirect from="*" to="/main" />
     </Route>
