@@ -9,6 +9,7 @@ $item-height: 480px;
   justify-content: center;
 }
 
+
 .item {
   width: 30%;
   height: $item-height;
@@ -71,6 +72,9 @@ $item-height: 480px;
 .description {
   margin-top: 1rem;
   font-size: 0.8rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .postedBy {
@@ -87,3 +91,34 @@ $item-height: 480px;
   width: 2rem;
   height: 2rem;
 }
+
+
+@media(max-width:480px) {
+  .item {
+    width: 90%;
+  }
+}
+@media(min-width:993px) {
+  .item {
+    width: 30%; // 3
+  }
+}
+
+@media(min-width:1320px) {
+  .item {
+    width: 22%; // 4
+  }
+}
+
+@media(min-width:1600px) {
+  .item {
+    width: 18%; // 5
+  }
+}
+
+@media(min-width:2160px) {
+  .item {
+    width: 15%; // 6
+  }
+}
+

@@ -11,7 +11,8 @@ export default class MomentContainer extends React.Component {
       count: 0,
       err: ''
     };
-    this.url = '/api/tweets/moments';
+    // this.url = '/api/tweets/moments';
+    this.url = '/api/moments';
   }
 
   componentWillReceiveProps(nextProps) {

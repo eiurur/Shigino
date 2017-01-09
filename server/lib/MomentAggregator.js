@@ -16,7 +16,8 @@ module.exports = class MomentAggregator {
       , access_token_secret: process.env.ACCESS_TOKEN_SECRET
     });
     this.keyword = "moments";
-    this.TweetProvider = ModelProviderFactory.create('Tweet');
+    this.MomentProvider = ModelProviderFactory.create('Moment');
+    this.CreatorProvider = ModelProviderFactory.create('Creator');
   }
 
   includeUrl(tweet) {
@@ -59,29 +60,38 @@ module.exports = class MomentAggregator {
   openStream() {
     this.stream = this.T.stream('statuses/filter', {'track': this.keyword, 'language': 'ja'});
     this.stream.on('tweet', (tweet) => {
-      // console.log(tweet.entities.urls);
-
+      // console.log(tweet.retweeted_status);
 
       if (!this.isMomentTweet(tweet)) return;
 
       // console.log(tweet);
       const moment_expanded_url = this.getMomentTweet(tweet).expanded_url;
+      const creator_id_str = (tweet.retweeted_status) ? tweet.retweeted_status.user.id_str :  tweet.user.id_str;
 
       this.scrapeMomentInfo(moment_expanded_url)
       .then( momentInfo => {
-        const opts = {
-          moment_id: moment_expanded_url.split('/').pop(),
-          expanded_url: moment_expanded_url,
+        const creatorOpts = {
+          id_str: creator_id_str,
           avater: momentInfo.avater,
           fullname: momentInfo.fullname,
           username: momentInfo.username,
+        };
+        const momentOpts = {
+          moment_id: moment_expanded_url.split('/').pop(),
+          expanded_url: moment_expanded_url,
           title: momentInfo.title,
           description: momentInfo.description,
           thumbnail: momentInfo.thumbnail,
           tweeted_at: TimeConverter.toNow(momentInfo.tweeted_at),
         };
         // console.log(MorphologicalAnalyzer.tokenize(momentInfo.description).then( result => console.log(result) ).catch(err => console.log(err) ));
-        this.TweetProvider.upsert(opts);
+        this.CreatorProvider.upsert(creatorOpts)
+        .then( (result) => {
+          const opts = Object.assign(momentOpts, {createdBy: result._id});
+          console.log('opts = ', opts);
+          this.MomentProvider.upsert(opts);
+        })
+        .catch( (err) => console.log(err) );
       });
 
     });

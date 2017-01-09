@@ -66,6 +66,10 @@
 
 	var _RankingContainer2 = _interopRequireDefault(_RankingContainer);
 
+	var _Moment = __webpack_require__(269);
+
+	var _Moment2 = _interopRequireDefault(_Moment);
+
 	var _MomentContainer = __webpack_require__(267);
 
 	var _MomentContainer2 = _interopRequireDefault(_MomentContainer);
@@ -88,6 +92,7 @@
 	    _react2.default.createElement(_reactRouter.Route, { path: '/main', component: _MainContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/ranking/:term', component: _RankingContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/lists', component: _MomentContainer2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/moment/:moment_id', component: _Moment2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/user/@:username', component: _MainContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Redirect, { from: '*', to: '/main' })
 	  )
@@ -27632,7 +27637,7 @@
 	      count: 0,
 	      err: null
 	    };
-	    _this.url = '/api/tweets/moments';
+	    _this.url = '/api/moments';
 	    return _this;
 	  }
 
@@ -27659,14 +27664,15 @@
 	      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 	      console.log('MainContainer handleSubmit', params);
+	      console.log('MainContainer !params.username', !params.username);
 	      // this.context.history.push(replaceParam('username', params.username));
-
+	      var url = params.username ? this.url + '/@' + params.username : this.url;
+	      console.log('url', url);
 	      (0, _axios2.default)({
-	        url: this.url,
+	        url: url,
 	        method: 'get',
 	        responseType: 'json',
 	        params: {
-	          username: params.username,
 	          word: params.word,
 	          skip: (params.currentPage - 1) * 30 || 0,
 	          limit: 30
@@ -29323,7 +29329,7 @@
 
 
 	// module
-	exports.push([module.id, ".src-modules-SearchForm-SearchForm---container---3YRQ9 {\n  margin: 4rem 0; }\n\ninput[type=\"text\"] {\n  font: bold 12px Arial,Helvetica,Sans-serif;\n  color: #7a9199;\n  box-shadow: none;\n  box-sizing: content-box;\n  margin: 0 0 20px 0;\n  padding: 0;\n  background-color: transparent;\n  border: none;\n  border-bottom: 1px solid #7a9199;\n  border-radius: 0;\n  outline: none;\n  height: 3rem;\n  width: 50%;\n  transition: all 0.7s ease 0s; }\n\ninput[type=\"text\"]:focus {\n  width: 100%; }\n", ""]);
+	exports.push([module.id, ".src-modules-SearchForm-SearchForm---container---3YRQ9 {\n  margin: 4rem 0; }\n\ninput[type=\"text\"] {\n  font: bold 12px Arial,Helvetica,Sans-serif;\n  color: #7a9199;\n  box-shadow: none;\n  box-sizing: content-box;\n  margin: 0 0 20px 0;\n  padding: 0;\n  background-color: transparent;\n  border: none;\n  border-bottom: 1px solid #7a9199;\n  border-radius: 0;\n  outline: none;\n  height: 3rem;\n  width: 25%;\n  transition: all 0.7s ease 0s; }\n\ninput[type=\"text\"]:focus {\n  width: 100%; }\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -29350,7 +29356,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _MomentItem = __webpack_require__(271);
+	var _MomentItem = __webpack_require__(268);
 
 	var _MomentItem2 = _interopRequireDefault(_MomentItem);
 
@@ -29379,7 +29385,8 @@
 	      count: 0,
 	      err: ''
 	    };
-	    _this.url = '/api/tweets/moments';
+	    // this.url = '/api/tweets/moments';
+	    _this.url = '/api/moments';
 	    return _this;
 	  }
 
@@ -29431,156 +29438,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(34);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _Moment = __webpack_require__(269);
-
-	var _Moment2 = _interopRequireDefault(_Moment);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Moment = function (_React$Component) {
-	  _inherits(Moment, _React$Component);
-
-	  function Moment(props) {
-	    _classCallCheck(this, Moment);
-
-	    var _this = _possibleConstructorReturn(this, (Moment.__proto__ || Object.getPrototypeOf(Moment)).call(this, props));
-
-	    _this.state = {
-	      initialized: false,
-	      moment: _this.props.moment
-	    };
-	    return _this;
-	  }
-
-	  _createClass(Moment, [{
-	    key: 'loadTwitterWidget',
-	    value: function loadTwitterWidget() {
-	      if (typeof twttr === 'undefined') {
-	        var twitterMoment = _reactDom2.default.findDOMNode(this.refs.twitterMoment);
-	        var twitterscript = document.createElement('script');
-	        twitterscript.src = '//platform.twitter.com/widgets.js';
-	        twitterscript.async = true;
-	        twitterMoment.parentNode.appendChild(twitterscript);
-	      } else {
-	        twttr.widgets.load();
-	      }
-	    }
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      if (this.state.initialized) {
-	        return;
-	      }
-	      this.loadTwitterWidget();
-	      this.initialized();
-	    }
-	  }, {
-	    key: 'initialized',
-	    value: function initialized() {
-	      this.setState({ initialized: true });
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      this.setState({
-	        moment: nextProps.moment
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: _Moment2.default.container },
-	        _react2.default.createElement(
-	          'div',
-	          { className: _Moment2.default.moment },
-	          _react2.default.createElement('a', {
-	            ref: 'twitterMoment',
-	            className: 'twitter-moment',
-	            href: '' + this.state.moment.expanded_url
-	          })
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Moment;
-	}(_react2.default.Component);
-
-	exports.default = Moment;
-
-/***/ },
-/* 269 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(270);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(239)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./Moment.scss", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./Moment.scss");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 270 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(238)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".src-modules-Moment-Moment---container---AegAy {\n  flex-grow: 1;\n  margin: 2rem 0 0 2rem; }\n", ""]);
-
-	// exports
-	exports.locals = {
-		"container": "src-modules-Moment-Moment---container---AegAy"
-	};
-
-/***/ },
-/* 271 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
 	var _reactRouter = __webpack_require__(172);
 
-	var _Moment = __webpack_require__(268);
+	var _Moment = __webpack_require__(269);
 
 	var _Moment2 = _interopRequireDefault(_Moment);
 
@@ -29662,7 +29522,7 @@
 	                  null,
 	                  _react2.default.createElement(
 	                    _reactRouter.Link,
-	                    { to: '/moment/@' + moment._id },
+	                    { to: '/moment/' + moment.moment_id },
 	                    moment.title
 	                  )
 	                )
@@ -29681,13 +29541,13 @@
 	                { className: _MomentItem2.default.postedBy },
 	                _react2.default.createElement(
 	                  _reactRouter.Link,
-	                  { to: '/user/@' + moment.username },
-	                  _react2.default.createElement('img', { src: moment.avater, className: _MomentItem2.default.avater }),
+	                  { to: '/user/@' + moment.createdBy.username },
+	                  _react2.default.createElement('img', { src: moment.createdBy.avater, className: _MomentItem2.default.avater }),
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: _MomentItem2.default.username },
 	                    '@',
-	                    moment.username
+	                    moment.createdBy.username
 	                  )
 	                )
 	              )
@@ -29715,6 +29575,180 @@
 	}(_react2.default.Component);
 
 	exports.default = MomentItem;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _axios = __webpack_require__(241);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _urlParamsHelper = __webpack_require__(263);
+
+	var _Moment = __webpack_require__(270);
+
+	var _Moment2 = _interopRequireDefault(_Moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Moment = function (_React$Component) {
+	  _inherits(Moment, _React$Component);
+
+	  function Moment(props) {
+	    _classCallCheck(this, Moment);
+
+	    var _this = _possibleConstructorReturn(this, (Moment.__proto__ || Object.getPrototypeOf(Moment)).call(this, props));
+
+	    _this.state = {
+	      moment: ''
+	    };
+	    _this.url = '/api/moment';
+
+	    return _this;
+	  }
+
+	  _createClass(Moment, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var _this2 = this;
+
+	      // console.log(location.href.split('/').pop());
+	      var moment_id = location.href.split('/').pop();
+	      (0, _axios2.default)({
+	        url: this.url + '/' + moment_id,
+	        method: 'get',
+	        responseType: 'json'
+	      }).then(function (res) {
+	        console.log('Moment fetch ', res.data.expanded_url);
+	        if (res.status !== 200) throw new Error(res.data);
+	        _this2.setState({
+	          moment: res.data
+	        });
+	        loadTwitterWidget();
+	      }).catch(function (err) {
+	        _this2.setState({ err: err });
+	      });
+	    }
+	  }, {
+	    key: 'rerenderMoment',
+	    value: function rerenderMoment() {
+	      _reactDom2.default.render(_react2.default.createElement('a', {
+	        ref: 'twitterMoment',
+	        className: 'twitter-moment',
+	        href: '' + this.state.moment.expanded_url
+	      }), _reactDom2.default.findDOMNode(this.refs.widget));
+
+	      window.scroll(0, 0);
+	    }
+	  }, {
+	    key: 'loadTwitterWidget',
+	    value: function loadTwitterWidget() {
+	      var twitterMoment = null;
+	      if (typeof twttr === 'undefined') {
+	        twitterMoment = _reactDom2.default.findDOMNode(this.refs.twitterMoment);
+	      } else {
+	        // HACK: 一度DOMを削除して再生成する方法でしかTwitterWidgetを更新できなかった。
+	        _reactDom2.default.unmountComponentAtNode(_reactDom2.default.findDOMNode(this.refs.twitterMoment));
+	        twitterMoment = _reactDom2.default.findDOMNode(this.refs.twitterMoment);
+	      }
+	      var twitterscript = document.createElement('script');
+	      twitterscript.src = '//platform.twitter.com/widgets.js';
+	      twitterscript.async = true;
+	      twitterMoment.parentNode.appendChild(twitterscript);
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.loadTwitterWidget();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _Moment2.default.container },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _Moment2.default.moment },
+	          _react2.default.createElement('a', {
+	            ref: 'twitterMoment',
+	            className: 'twitter-moment',
+	            href: '' + this.state.moment.expanded_url
+	          })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Moment;
+	}(_react2.default.Component);
+
+	exports.default = Moment;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(271);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(239)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./Moment.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js?modules&localIdentName=[path][name]---[local]---[hash:base64:5]!./../../../node_modules/sass-loader/index.js!./Moment.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(238)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".src-modules-Moment-Moment---moment---1u2Gq {\n  margin: 2rem 0 0 2rem;\n  margin: 0 auto;\n  max-width: 1280px; }\n", ""]);
+
+	// exports
+	exports.locals = {
+		"moment": "src-modules-Moment-Moment---moment---1u2Gq"
+	};
 
 /***/ },
 /* 272 */
@@ -29837,7 +29871,7 @@
 
 
 	// module
-	exports.push([module.id, ".src-modules-Pagination-Pagination---container---1d791 {\n  display: flex;\n  justify-content: space-between;\n  font-size: 1.5rem; }\n\n.src-modules-Pagination-Pagination---arrow---3-dKk {\n  cursor: pointer;\n  transition: color ease; }\n  .src-modules-Pagination-Pagination---arrow---3-dKk:hover {\n    color: #d1d9db; }\n", ""]);
+	exports.push([module.id, ".src-modules-Pagination-Pagination---container---1d791 {\n  display: flex;\n  justify-content: space-between;\n  font-size: 2rem;\n  color: #7a9199;\n  margin: 2rem 0; }\n\n.src-modules-Pagination-Pagination---arrow---3-dKk {\n  font-size: 3rem;\n  cursor: pointer;\n  transition: color ease; }\n  .src-modules-Pagination-Pagination---arrow---3-dKk:hover {\n    color: #d1d9db; }\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -29880,7 +29914,7 @@
 
 
 	// module
-	exports.push([module.id, ".src-modules-MomentItem-MomentItem---container---2QE1t {\n  width: 100%; }\n\n.src-modules-MomentItem-MomentItem---nodes---3FO-a {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center; }\n\n.src-modules-MomentItem-MomentItem---item---1IsZ6 {\n  width: 30%;\n  height: 480px;\n  position: relative;\n  margin: 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  color: #fff;\n  text-shadow: 0 1px 1px #000; }\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 a {\n    color: #fff; }\n\n.src-modules-MomentItem-MomentItem---overlay---26cRT {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: rgba(0, 0, 0, 0.6);\n  z-index: 300; }\n\n.src-modules-MomentItem-MomentItem---catch---fxp_4 {\n  height: 100%;\n  display: inline-block;\n  cursor: pointer;\n  object-fit: cover;\n  width: 100%;\n  height: 480px;\n  z-index: 10;\n  background-color: #1c1d22; }\n\n.src-modules-MomentItem-MomentItem---attribution---f66D7 {\n  width: 90%;\n  z-index: 400;\n  text-align: center;\n  position: absolute; }\n\n.src-modules-MomentItem-MomentItem---rank---r_x21 {\n  font-size: 6rem;\n  line-height: 1.6; }\n\n.src-modules-MomentItem-MomentItem---title---1MPzV {\n  margin-top: 1rem;\n  font-size: 2.5rem; }\n\n.src-modules-MomentItem-MomentItem---description---1r-UP {\n  margin-top: 1rem;\n  font-size: 0.8rem; }\n\n.src-modules-MomentItem-MomentItem---postedBy---1xCFg {\n  margin-top: 1.5rem;\n  font-size: 1rem; }\n\n.src-modules-MomentItem-MomentItem---username---UBJCI {\n  margin-top: 0.5rem; }\n\n.src-modules-MomentItem-MomentItem---avater---39E4B {\n  border-radius: 100%;\n  width: 2rem;\n  height: 2rem; }\n", ""]);
+	exports.push([module.id, ".src-modules-MomentItem-MomentItem---container---2QE1t {\n  width: 100%; }\n\n.src-modules-MomentItem-MomentItem---nodes---3FO-a {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center; }\n\n.src-modules-MomentItem-MomentItem---item---1IsZ6 {\n  width: 30%;\n  height: 480px;\n  position: relative;\n  margin: 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  color: #fff;\n  text-shadow: 0 1px 1px #000; }\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 a {\n    color: #fff; }\n\n.src-modules-MomentItem-MomentItem---overlay---26cRT {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: rgba(0, 0, 0, 0.6);\n  z-index: 300; }\n\n.src-modules-MomentItem-MomentItem---catch---fxp_4 {\n  height: 100%;\n  display: inline-block;\n  cursor: pointer;\n  object-fit: cover;\n  width: 100%;\n  height: 480px;\n  z-index: 10;\n  background-color: #1c1d22; }\n\n.src-modules-MomentItem-MomentItem---attribution---f66D7 {\n  width: 90%;\n  z-index: 400;\n  text-align: center;\n  position: absolute; }\n\n.src-modules-MomentItem-MomentItem---rank---r_x21 {\n  font-size: 6rem;\n  line-height: 1.6; }\n\n.src-modules-MomentItem-MomentItem---title---1MPzV {\n  margin-top: 1rem;\n  font-size: 2.5rem; }\n\n.src-modules-MomentItem-MomentItem---description---1r-UP {\n  margin-top: 1rem;\n  font-size: 0.8rem;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis; }\n\n.src-modules-MomentItem-MomentItem---postedBy---1xCFg {\n  margin-top: 1.5rem;\n  font-size: 1rem; }\n\n.src-modules-MomentItem-MomentItem---username---UBJCI {\n  margin-top: 0.5rem; }\n\n.src-modules-MomentItem-MomentItem---avater---39E4B {\n  border-radius: 100%;\n  width: 2rem;\n  height: 2rem; }\n\n@media (max-width: 480px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 90%; } }\n\n@media (min-width: 993px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 30%; } }\n\n@media (min-width: 1320px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 22%; } }\n\n@media (min-width: 1600px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 18%; } }\n\n@media (min-width: 2160px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 15%; } }\n", ""]);
 
 	// exports
 	exports.locals = {
@@ -30031,7 +30065,7 @@
 	      count: 0,
 	      err: null
 	    };
-	    _this.url = '/api/tweets/moments/ranking';
+	    _this.url = '/api/moments/ranking';
 	    return _this;
 	  }
 
@@ -30066,7 +30100,8 @@
 	        responseType: 'json',
 	        params: {
 	          skip: (params.currentPage - 1) * 30 || 0,
-	          limit: 30
+	          limit: 30,
+	          sort: { count: -1 }
 	        }
 	      }).then(function (res) {
 	        console.log('RankingContainer fetch ', res.data);

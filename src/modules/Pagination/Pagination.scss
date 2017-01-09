@@ -1,10 +1,13 @@
 .container {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+  color: #7a9199;
+  margin: 2rem 0;
 }
 
 .arrow {
+  font-size: 3rem;
   cursor: pointer;
   transition: color ease;
   &:hover {

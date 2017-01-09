@@ -39,16 +39,16 @@ export default class MomentItem extends React.Component {
             <section className={style.attribution}>
               <div className={style.title}>
                 <div>
-                  <Link to={`/moment/@${moment._id}`}>{moment.title}</Link>
+                  <Link to={`/moment/${moment.moment_id}`}>{moment.title}</Link>
                 </div>
               </div>
               <div className={style.description}>
                 <div>{moment.description}</div>
               </div>
               <div className={style.postedBy}>
-                <Link to={`/user/@${moment.username}`}>
-                  <img src={moment.avater} className={style.avater}/>
-                  <div className={style.username}>@{moment.username}</div>
+                <Link to={`/user/@${moment.createdBy.username}`}>
+                  <img src={moment.createdBy.avater} className={style.avater}/>
+                  <div className={style.username}>@{moment.createdBy.username}</div>
                 </Link>
               </div>
             </section>

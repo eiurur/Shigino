@@ -13,7 +13,7 @@ export default class RankingContainer extends React.Component {
       count: 0,
       err: null
     };
-    this.url = '/api/tweets/moments/ranking';
+    this.url = '/api/moments/ranking';
   }
 
   componentDidMount() {
@@ -40,6 +40,7 @@ export default class RankingContainer extends React.Component {
       params: {
         skip: (params.currentPage - 1) * 30 || 0,
         limit: 30,
+        sort: { count: -1 },
       }
     })
     .then( res => {
