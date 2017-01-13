@@ -5,7 +5,6 @@ import App from './modules/App';
 import MainContainer from './modules/MainContainer/MainContainer';
 import RankingContainer from './modules/RankingContainer/RankingContainer';
 import Moment from './modules/Moment/Moment';
-import MomentContainer from './modules/MomentContainer/MomentContainer';
 
 import './reset.scss';
 import './index.scss';
@@ -16,7 +15,6 @@ render((
     <Route path="/" component={App}>
       <Route path="/main" component={MainContainer}/>
       <Route path="/ranking/:term" component={RankingContainer}/>
-      <Route path="/lists" component={MomentContainer}/>
       <Route path="/moment/:moment_id" component={Moment}/>
       <Route path="/user/@:username" component={MainContainer}/>
       <Redirect from="*" to="/main" />

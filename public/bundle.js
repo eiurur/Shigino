@@ -70,10 +70,6 @@
 
 	var _Moment2 = _interopRequireDefault(_Moment);
 
-	var _MomentContainer = __webpack_require__(267);
-
-	var _MomentContainer2 = _interopRequireDefault(_MomentContainer);
-
 	__webpack_require__(284);
 
 	__webpack_require__(286);
@@ -91,7 +87,6 @@
 	    { path: '/', component: _App2.default },
 	    _react2.default.createElement(_reactRouter.Route, { path: '/main', component: _MainContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/ranking/:term', component: _RankingContainer2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/lists', component: _MomentContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/moment/:moment_id', component: _Moment2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/user/@:username', component: _MainContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Redirect, { from: '*', to: '/main' })
@@ -29647,7 +29642,7 @@
 	        _this2.setState({
 	          moment: res.data
 	        });
-	        loadTwitterWidget();
+	        _this2.loadTwitterWidget();
 	      }).catch(function (err) {
 	        _this2.setState({ err: err });
 	      });
@@ -29914,7 +29909,7 @@
 
 
 	// module
-	exports.push([module.id, ".src-modules-MomentItem-MomentItem---container---2QE1t {\n  width: 100%; }\n\n.src-modules-MomentItem-MomentItem---nodes---3FO-a {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center; }\n\n.src-modules-MomentItem-MomentItem---item---1IsZ6 {\n  width: 30%;\n  height: 480px;\n  position: relative;\n  margin: 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  color: #fff;\n  text-shadow: 0 1px 1px #000; }\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 a {\n    color: #fff; }\n\n.src-modules-MomentItem-MomentItem---overlay---26cRT {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: rgba(0, 0, 0, 0.6);\n  z-index: 300; }\n\n.src-modules-MomentItem-MomentItem---catch---fxp_4 {\n  height: 100%;\n  display: inline-block;\n  cursor: pointer;\n  object-fit: cover;\n  width: 100%;\n  height: 480px;\n  z-index: 10;\n  background-color: #1c1d22; }\n\n.src-modules-MomentItem-MomentItem---attribution---f66D7 {\n  width: 90%;\n  z-index: 400;\n  text-align: center;\n  position: absolute; }\n\n.src-modules-MomentItem-MomentItem---rank---r_x21 {\n  font-size: 6rem;\n  line-height: 1.6; }\n\n.src-modules-MomentItem-MomentItem---title---1MPzV {\n  margin-top: 1rem;\n  font-size: 2.5rem; }\n\n.src-modules-MomentItem-MomentItem---description---1r-UP {\n  margin-top: 1rem;\n  font-size: 0.8rem;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis; }\n\n.src-modules-MomentItem-MomentItem---postedBy---1xCFg {\n  margin-top: 1.5rem;\n  font-size: 1rem; }\n\n.src-modules-MomentItem-MomentItem---username---UBJCI {\n  margin-top: 0.5rem; }\n\n.src-modules-MomentItem-MomentItem---avater---39E4B {\n  border-radius: 100%;\n  width: 2rem;\n  height: 2rem; }\n\n@media (max-width: 480px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 90%; } }\n\n@media (min-width: 993px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 30%; } }\n\n@media (min-width: 1320px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 22%; } }\n\n@media (min-width: 1600px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 18%; } }\n\n@media (min-width: 2160px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 15%; } }\n", ""]);
+	exports.push([module.id, ".src-modules-MomentItem-MomentItem---container---2QE1t {\n  width: 100%; }\n\n.src-modules-MomentItem-MomentItem---nodes---3FO-a {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center; }\n\n.src-modules-MomentItem-MomentItem---item---1IsZ6 {\n  width: 30%;\n  height: 480px;\n  position: relative;\n  margin: 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  color: #fff;\n  text-shadow: 0 1px 1px #000; }\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 a {\n    color: #fff; }\n\n.src-modules-MomentItem-MomentItem---overlay---26cRT {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: rgba(0, 0, 0, 0.6);\n  z-index: 300; }\n\n.src-modules-MomentItem-MomentItem---catch---fxp_4 {\n  height: 100%;\n  display: inline-block;\n  cursor: pointer;\n  object-fit: cover;\n  width: 100%;\n  height: 480px;\n  z-index: 10;\n  background-color: #1c1d22; }\n\n.src-modules-MomentItem-MomentItem---attribution---f66D7 {\n  width: 90%;\n  z-index: 400;\n  text-align: center;\n  position: absolute; }\n\n.src-modules-MomentItem-MomentItem---rank---r_x21 {\n  font-size: 6rem;\n  line-height: 1.6; }\n\n.src-modules-MomentItem-MomentItem---title---1MPzV {\n  margin-top: 1rem;\n  font-size: 2rem; }\n\n.src-modules-MomentItem-MomentItem---description---1r-UP {\n  margin-top: 1rem;\n  font-size: 0.8rem;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis; }\n\n.src-modules-MomentItem-MomentItem---postedBy---1xCFg {\n  margin-top: 1.5rem;\n  font-size: 1rem; }\n\n.src-modules-MomentItem-MomentItem---username---UBJCI {\n  margin-top: 0.5rem; }\n\n.src-modules-MomentItem-MomentItem---avater---39E4B {\n  border-radius: 100%;\n  width: 2rem;\n  height: 2rem; }\n\n@media (max-width: 480px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 90%; } }\n\n@media (min-width: 993px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 30%; } }\n\n@media (min-width: 1320px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 22%; } }\n\n@media (min-width: 1600px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 18%; } }\n\n@media (min-width: 2160px) {\n  .src-modules-MomentItem-MomentItem---item---1IsZ6 {\n    width: 15%; } }\n", ""]);
 
 	// exports
 	exports.locals = {

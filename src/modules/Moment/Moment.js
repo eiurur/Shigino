@@ -28,7 +28,7 @@ export default class Moment extends React.Component {
       this.setState({
         moment: res.data,
       });
-      loadTwitterWidget();
+      this.loadTwitterWidget();
     })
     .catch( err => {
       this.setState({err: err});
