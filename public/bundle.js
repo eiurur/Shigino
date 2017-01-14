@@ -85,11 +85,11 @@
 	  _react2.default.createElement(
 	    _reactRouter.Route,
 	    { path: '/', component: _App2.default },
-	    _react2.default.createElement(_reactRouter.Route, { path: '/main', component: _MainContainer2.default }),
+	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _MainContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/ranking/:term', component: _RankingContainer2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/moment/:moment_id', component: _Moment2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/user/@:username', component: _MainContainer2.default }),
-	    _react2.default.createElement(_reactRouter.Redirect, { from: '*', to: '/main' })
+	    _react2.default.createElement(_reactRouter.Redirect, { from: '*', to: '/' })
 	  )
 	), document.getElementById('app'));
 
@@ -27168,8 +27168,8 @@
 	              { className: _App2.default.item },
 	              _react2.default.createElement(
 	                _reactRouter.Link,
-	                { to: '/main', className: _App2.default.link, activeClassName: 'active' },
-	                'Chika'
+	                { to: '/', className: _App2.default.link, activeClassName: 'active' },
+	                'Shigino'
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -27177,7 +27177,7 @@
 	              { className: _App2.default.item },
 	              _react2.default.createElement(
 	                _reactRouter.Link,
-	                { to: '/main', className: _App2.default.link, activeClassName: 'active' },
+	                { to: '/', className: _App2.default.link, activeClassName: 'active' },
 	                'Main'
 	              )
 	            ),
@@ -27660,7 +27660,6 @@
 
 	      console.log('MainContainer handleSubmit', params);
 	      console.log('MainContainer !params.username', !params.username);
-	      // this.context.history.push(replaceParam('username', params.username));
 	      var url = params.username ? this.url + '/@' + params.username : this.url;
 	      console.log('url', url);
 	      (0, _axios2.default)({

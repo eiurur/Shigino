@@ -34,7 +34,6 @@ export default class MainContainer extends React.Component {
   handleSubmit(params = {}) {
     console.log('MainContainer handleSubmit', params);
     console.log('MainContainer !params.username', !params.username);
-      // this.context.history.push(replaceParam('username', params.username));
     const url = (params.username) ? `${this.url}/@${params.username}` : this.url;
     console.log('url', url);
     axios({

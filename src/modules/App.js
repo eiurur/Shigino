@@ -8,8 +8,8 @@ export default class App extends React.Component {
       <header>
         <nav>
           <ul role="nav">
-            <li className={style.item}><Link to="/main"  className={style.link} activeClassName="active">Chika</Link></li>
-            <li className={style.item}><Link to="/main"  className={style.link} activeClassName="active">Main</Link></li>
+            <li className={style.item}><Link to="/"  className={style.link} activeClassName="active">Shigino</Link></li>
+            <li className={style.item}><Link to="/"  className={style.link} activeClassName="active">Main</Link></li>
             <li className={style.item}><Link to="/ranking/day"  className={style.link} activeClassName="active">Day</Link></li>
             <li className={style.item}><Link to="/ranking/week"  className={style.link} activeClassName="active">Week</Link></li>
             <li className={style.item}><Link to="/ranking/month"  className={style.link} activeClassName="active">Month</Link></li>
