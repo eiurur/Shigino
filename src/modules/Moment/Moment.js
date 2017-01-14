@@ -15,7 +15,6 @@ export default class Moment extends React.Component {
   }
 
   componentWillMount() {
-    // console.log(location.href.split('/').pop());
     const moment_id = location.href.split('/').pop();
     axios({
       url: `${this.url}/${moment_id}`,
@@ -23,7 +22,6 @@ export default class Moment extends React.Component {
       responseType: 'json',
     })
     .then( res => {
-      console.log('Moment fetch ', res.data.expanded_url);
       if(res.status !== 200) throw new Error(res.data);
       this.setState({
         moment: res.data,

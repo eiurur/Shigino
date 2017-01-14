@@ -14,8 +14,6 @@ export default class MomentItem extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('MomentItem componentWillReceiveProps');
-    console.log(this.props.moments, nextProps.moments);
     this.state = {
       moments: nextProps.moments,
       count: nextProps.count,
@@ -23,7 +21,6 @@ export default class MomentItem extends React.Component {
   }
 
   handleChange(moment) {
-    console.log('MomentItem handleChange ', moment);
     this.props.selectedMoment(moment);
   }
 

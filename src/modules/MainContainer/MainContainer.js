@@ -19,23 +19,17 @@ export default class MainContainer extends React.Component {
   }
 
   componentDidMount() {
-    console.log('MainContainer componentDidMount', this.props);
     const params = Object.assign(this.props.params, getParams());
     this.handleSubmit(params);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('MainContainer componentWillReceiveProps', nextProps.params);
-    console.log('MainContainer componentWillReceiveProps getParams', getParams());
     const params = Object.assign(nextProps.params, getParams());
     this.handleSubmit(params);
   }
 
   handleSubmit(params = {}) {
-    console.log('MainContainer handleSubmit', params);
-    console.log('MainContainer !params.username', !params.username);
     const url = (params.username) ? `${this.url}/@${params.username}` : this.url;
-    console.log('url', url);
     axios({
       url: url,
       method: 'get',
@@ -47,7 +41,6 @@ export default class MainContainer extends React.Component {
       }
     })
     .then( res => {
-      console.log('MainContainer fetch ', res.data);
       if(res.status !== 200) throw new Error(res.data);
       this.setState({
         moments: res.data.moments,
@@ -60,7 +53,6 @@ export default class MainContainer extends React.Component {
   }
 
   render() {
-    console.log('MainContainer render ');
     return (
       <div className={style.container}>
         <SearchForm onWordSubmit={this.handleSubmit.bind(this)}></SearchForm>

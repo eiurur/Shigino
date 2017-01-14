@@ -16,8 +16,6 @@ export default class MomentContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("MomentContainer componentWillReceiveProps", nextProps);
-    console.log("MomentContainer componentWillReceiveProps", this.state);
     if(nextProps.moments !== undefined) {
       this.setState({
         moments: nextProps.moments,
@@ -28,7 +26,6 @@ export default class MomentContainer extends React.Component {
   }
 
   render() {
-    console.log("MomentContainer render ", this.state.moments);
     return (
       <div className={style.container}>
         <MomentItem
