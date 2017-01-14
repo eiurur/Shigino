@@ -1,7 +1,8 @@
 const chalk    = require('chalk');
 const mongoose = require('mongoose');
 
-require('dotenv').config();
+if(process.env.NODE_ENV === 'development')
+  require('dotenv').config();
 
 let uri      = process.env.MONGOLAB_URI || process.env.MONGODB_URI;
 let db       = mongoose.connect(uri);

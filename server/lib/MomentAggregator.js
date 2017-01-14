@@ -1,11 +1,11 @@
-
-require('dotenv').config();
 const twit                 = require('twit');
 const path                 = require('path');
 const client               = require('cheerio-httpcli');
 const ModelProviderFactory = require(path.resolve('server', 'model', 'ModelProviderFactory'));
 const TimeConverter        = require(path.resolve('server', 'lib', 'TimeConverter'));
 
+if(process.env.NODE_ENV === 'development')
+  require('dotenv').config();
 
 module.exports = class MomentAggregator {
   constructor() {
