@@ -1,4 +1,4 @@
-Chika
+Shigino
 ======
 
 【WIP】 Twitter Moment Aggregator
@@ -23,11 +23,11 @@ Chika
 
 **Ex**
 
-    http://chika.eiurur.xyz/api/tweets/moments?limit=30&skip=0&word=%E8%89%A6%E3%81%93%E3%82%8C
+    https://shigino.herokuapp.com/api/tweets/moments?limit=30&skip=0&word=%E8%89%A6%E3%81%93%E3%82%8C
 
 **Output**
 
-    λ curl "http://chika.eiurur.xyz/api/tweets/moments?limit=1&word=%E3%81%94%E3%81%A1%E3%81%86%E3%81%95" | python -mjson.tool
+    λ curl "https://shigino.herokuapp.com/api/tweets/moments?limit=1&word=%E3%81%94%E3%81%A1%E3%81%86%E3%81%95" | python -mjson.tool
       % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                      Dload  Upload   Total   Spent    Left  Speed
     100   593  100   593    0     0   6860      0 --:--:-- --:--:-- --:--:--  7059
@@ -62,11 +62,11 @@ Chika
 
 **Ex**
 
-    http://chika.eiurur.xyz/api/tweets/moments/@tiv_
+    https://shigino.herokuapp.com/api/tweets/moments/@tiv_
 
 **Output**
 
-    λ curl "http://chika.eiurur.xyz/api/tweets/moments/@tiv_" | python -mjson.tool
+    λ curl "https://shigino.herokuapp.com/api/tweets/moments/@tiv_" | python -mjson.tool
       % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                      Dload  Upload   Total   Spent    Left  Speed
     100  1756  100  1756    0     0  27927      0 --:--:-- --:--:-- --:--:-- 29266
@@ -132,11 +132,11 @@ Chika
 
 **Ex**
 
-    curl "http://chika.eiurur.xyz/api/tweets/moments/ranking/month" | python -mjson.tool
+    curl "https://shigino.herokuapp.com/api/tweets/moments/ranking/month" | python -mjson.tool
 
 **Output**
 
-    λ  curl "http://chika.eiurur.xyz/api/tweets/moments/ranking/month?limit=3" | python -mjson.tool
+    λ  curl "https://shigino.herokuapp.com/api/tweets/moments/ranking/month?limit=3" | python -mjson.tool
       % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                      Dload  Upload   Total   Spent    Left  Speed
     100  1953  100  1953    0     0  17597      0 --:--:-- --:--:-- --:--:-- 17917
@@ -207,11 +207,11 @@ Chika
 
 **Ex**
 
-    curl "http://chika.eiurur.xyz/api/tweets/moments/latest?limit=3" | python -mjson.tool
+    curl "https://shigino.herokuapp.com/api/tweets/moments/latest?limit=3" | python -mjson.tool
 
 **Output**
 
-    λ  curl "http://chika.eiurur.xyz/api/tweets/moments/latest?limit=3" | python -mjson.tool
+    λ  curl "https://shigino.herokuapp.com/api/tweets/moments/latest?limit=3" | python -mjson.tool
       % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                      Dload  Upload   Total   Spent    Left  Speed
     100  1697  100  1697    0     0  16130      0 --:--:-- --:--:-- --:--:-- 16475
