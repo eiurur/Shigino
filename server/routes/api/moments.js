@@ -4,9 +4,8 @@ const ModelProviderFactory = require(path.resolve('server', 'model', 'ModelProvi
 
 module.exports = (app) => {
   app.get('/api/moment/:moment_id', function(req, res) {
-    const MomentProvider = ModelProviderFactory.create('Moment');
     const opts = { moment_id: req.params.moment_id };
-    MomentProvider.findById(opts)
+    ModelProviderFactory.create('Moment').findById(opts)
     .then(moment => {
       res.send(moment);
     })
@@ -14,13 +13,9 @@ module.exports = (app) => {
   });
 
   app.get('/api/moments/@:username', function(req, res) {
-    console.log(req.params.username);
-    const CreatorProvider = ModelProviderFactory.create('Creator');
-    CreatorProvider.findByUsername({username: req.params.username})
+    const creatorOpts = {username: req.params.username};
+    ModelProviderFactory.create('Creator').findByUsername(creatorOpts)
     .then(creator => {
-
-      console.log(creator);
-
       const opts = {
         createdBy: creator._id,
         limit: req.query.limit - 0,
@@ -28,12 +23,9 @@ module.exports = (app) => {
         sort: {count: -1},
       };
 
-      const MomentProvider = ModelProviderFactory.create('Moment');
-      return MomentProvider.findByCreator(opts)
+      return ModelProviderFactory.create('Moment').findByCreator(opts);
     })
-    .then(moments => {
-      res.send(moments);
-    })
+    .then( moments => res.send(moments) )
     .catch( err => res.status(400).send(err));
   });
 
@@ -46,18 +38,12 @@ module.exports = (app) => {
       sort: {tweeted_at: -1},
     };
 
-    // if(req.query.username) opts.query.username = req.query.username;
-
-    const MomentProvider = ModelProviderFactory.create('Moment');
-    MomentProvider.find(opts)
-    .then(moments => {
-      res.send(moments);
-    })
+    ModelProviderFactory.create('Moment').find(opts)
+    .then( moments => res.send(moments) )
     .catch( err => res.status(400).send(err));
   });
 
   app.get('/api/moments/ranking/:term', function(req, res) {
-
     if(!['day', 'week', 'month', 'year'].includes(req.params.term)) {
       res.status(400).send('期間はday, week, month, yearのみ指定できます');
       return;
@@ -72,8 +58,7 @@ module.exports = (app) => {
       sort: {count: -1},
     };
 
-    const MomentProvider = ModelProviderFactory.create('Moment');
-    MomentProvider.findByTerm(opts)
+    ModelProviderFactory.create('Moment').findByTerm(opts)
     .then(moments => {
       res.send(moments);
     })
@@ -90,13 +75,8 @@ module.exports = (app) => {
       sort: {count: -1},
     };
 
-    // if(req.query.username) opts.query.username = req.query.username;
-
-    const MomentProvider = ModelProviderFactory.create('Moment');
-    MomentProvider.find(opts)
-    .then(moments => {
-      res.send(moments);
-    })
+    ModelProviderFactory.create('Moment').find(opts)
+    .then( moments =>res.send(moments) )
     .catch( err => res.status(400).send(err));
   });
 };

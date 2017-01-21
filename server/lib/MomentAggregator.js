@@ -60,11 +60,9 @@ module.exports = class MomentAggregator {
   openStream() {
     this.stream = this.T.stream('statuses/filter', {'track': this.keyword, 'language': 'ja'});
     this.stream.on('tweet', (tweet) => {
-      // console.log(tweet.retweeted_status);
 
       if (!this.isMomentTweet(tweet)) return;
 
-      // console.log(tweet);
       const moment_expanded_url = this.getMomentTweet(tweet).expanded_url;
       const creator_id_str = (tweet.retweeted_status) ? tweet.retweeted_status.user.id_str :  tweet.user.id_str;
 
@@ -84,7 +82,11 @@ module.exports = class MomentAggregator {
           thumbnail: momentInfo.thumbnail,
           tweeted_at: TimeConverter.toNow(momentInfo.tweeted_at),
         };
-        // console.log(MorphologicalAnalyzer.tokenize(momentInfo.description).then( result => console.log(result) ).catch(err => console.log(err) ));
+
+        // 公式モーメントはusernameが空。
+        // 公式モーメントを収集するとランキングがぶっ壊れる、見てもつまらないので保存しない。
+        if(!momentInfo.username) return;
+
         this.CreatorProvider.upsert(creatorOpts)
         .then( (result) => {
           const opts = Object.assign(momentOpts, {createdBy: result._id});
