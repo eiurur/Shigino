@@ -73,6 +73,11 @@ export default class Moment extends React.Component {
             href={`${this.state.moment.expanded_url}`}
           />
         </div>
+        <div className={style.title}>
+          <a
+            href={this.state.moment.expanded_url}
+            target="_blank">{this.state.moment.title}</a>
+        </div>
       </div>
     );
   }

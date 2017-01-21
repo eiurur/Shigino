@@ -1,4 +1,5 @@
 node_modules/*
+backup/*
 public/bundle.js
 .env
-backup/*
+heroku_config.sh
